@@ -1,0 +1,1843 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>My Crops - Organic Farming Management System</title>
+
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f4f8f4;
+            color: #333;
+        }
+
+
+        /* =========================
+           SIDEBAR
+        ========================= */
+
+        .sidebar {
+
+            position: fixed;
+
+            left: 0;
+            top: 0;
+
+            width: 250px;
+            height: 100vh;
+
+            background: #1b5e20;
+
+            color: white;
+
+            padding: 25px 15px;
+
+            z-index: 1000;
+        }
+
+
+        .logo {
+
+            text-align: center;
+
+            font-size: 25px;
+
+            font-weight: bold;
+
+            margin-bottom: 35px;
+        }
+
+
+        .logo span {
+            color: #a5d6a7;
+        }
+
+
+        /* Farmer Profile */
+
+        .farmer-info {
+
+            text-align: center;
+
+            padding-bottom: 25px;
+
+            border-bottom:
+                1px solid rgba(255,255,255,0.2);
+
+            margin-bottom: 20px;
+        }
+
+
+        .farmer-icon {
+
+            width: 70px;
+            height: 70px;
+
+            margin: auto;
+
+            background: #66bb6a;
+
+            border-radius: 50%;
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            font-size: 35px;
+
+            margin-bottom: 10px;
+        }
+
+
+        .farmer-info h3 {
+            margin-bottom: 5px;
+        }
+
+
+        .farmer-info p {
+
+            font-size: 13px;
+
+            color: #c8e6c9;
+        }
+
+
+        /* Menu */
+
+        .menu {
+
+            list-style: none;
+        }
+
+
+        .menu li {
+            margin: 7px 0;
+        }
+
+
+        .menu li a {
+
+            display: block;
+
+            padding: 13px 15px;
+
+            color: white;
+
+            text-decoration: none;
+
+            border-radius: 7px;
+
+            transition: 0.3s;
+        }
+
+
+        .menu li a:hover,
+        .menu li a.active {
+
+            background: #2e7d32;
+        }
+
+
+        .menu-icon {
+            margin-right: 10px;
+        }
+
+
+        /* Logout */
+
+        .logout {
+
+            position: absolute;
+
+            bottom: 25px;
+
+            left: 15px;
+            right: 15px;
+        }
+
+
+        .logout a {
+
+            display: block;
+
+            text-align: center;
+
+            padding: 12px;
+
+            background: #c62828;
+
+            color: white;
+
+            text-decoration: none;
+
+            border-radius: 7px;
+        }
+
+
+        /* =========================
+           MAIN
+        ========================= */
+
+        .main {
+
+            margin-left: 250px;
+
+            padding: 30px;
+        }
+
+
+        /* Header */
+
+        .top-header {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            margin-bottom: 25px;
+        }
+
+
+        .page-title h1 {
+
+            color: #1b5e20;
+
+            margin-bottom: 5px;
+        }
+
+
+        .page-title p {
+            color: #777;
+        }
+
+
+        .date {
+
+            background: white;
+
+            padding: 12px 18px;
+
+            border-radius: 8px;
+
+            box-shadow:
+                0 3px 10px rgba(0,0,0,0.08);
+        }
+
+
+        /* =========================
+           STATISTICS
+        ========================= */
+
+        .stats {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 20px;
+
+            margin-bottom: 25px;
+        }
+
+
+        .stat-card {
+
+            background: white;
+
+            padding: 20px;
+
+            border-radius: 10px;
+
+            box-shadow:
+                0 3px 12px rgba(0,0,0,0.07);
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+        }
+
+
+        .stat-card h2 {
+
+            color: #1b5e20;
+
+            font-size: 28px;
+
+            margin-bottom: 5px;
+        }
+
+
+        .stat-card p {
+            color: #777;
+        }
+
+
+        .stat-icon {
+
+            width: 55px;
+            height: 55px;
+
+            border-radius: 50%;
+
+            background: #e8f5e9;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-size: 27px;
+        }
+
+
+        /* =========================
+           ADD CROP BUTTON
+        ========================= */
+
+        .top-actions {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            margin-bottom: 20px;
+        }
+
+
+        .add-btn {
+
+            background: #2e7d32;
+
+            color: white;
+
+            border: none;
+
+            padding: 12px 20px;
+
+            border-radius: 7px;
+
+            font-size: 15px;
+
+            cursor: pointer;
+
+            font-weight: bold;
+        }
+
+
+        .add-btn:hover {
+            background: #1b5e20;
+        }
+
+
+        /* Search */
+
+        .search-box {
+
+            background: white;
+
+            padding: 10px 15px;
+
+            border-radius: 7px;
+
+            border: 1px solid #ddd;
+
+            width: 280px;
+
+            outline: none;
+        }
+
+
+        /* =========================
+           ADD CROP FORM
+        ========================= */
+
+        .form-card {
+
+            display: none;
+
+            background: white;
+
+            padding: 25px;
+
+            border-radius: 10px;
+
+            margin-bottom: 25px;
+
+            box-shadow:
+                0 3px 12px rgba(0,0,0,0.07);
+        }
+
+
+        .form-card h2 {
+
+            color: #1b5e20;
+
+            margin-bottom: 20px;
+        }
+
+
+        .form-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, 1fr);
+
+            gap: 18px;
+        }
+
+
+        .form-group label {
+
+            display: block;
+
+            color: #2e7d32;
+
+            font-weight: bold;
+
+            margin-bottom: 7px;
+        }
+
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+
+            width: 100%;
+
+            padding: 11px;
+
+            border: 1px solid #ccc;
+
+            border-radius: 6px;
+
+            outline: none;
+        }
+
+
+        .form-group textarea {
+
+            resize: none;
+
+            height: 90px;
+        }
+
+
+        .form-buttons {
+
+            margin-top: 20px;
+
+            display: flex;
+
+            gap: 10px;
+        }
+
+
+        .save-btn {
+
+            background: #2e7d32;
+
+            color: white;
+
+            border: none;
+
+            padding: 11px 22px;
+
+            border-radius: 6px;
+
+            cursor: pointer;
+        }
+
+
+        .cancel-btn {
+
+            background: #777;
+
+            color: white;
+
+            border: none;
+
+            padding: 11px 22px;
+
+            border-radius: 6px;
+
+            cursor: pointer;
+        }
+
+
+        /* =========================
+           CROPS TABLE
+        ========================= */
+
+        .table-card {
+
+            background: white;
+
+            padding: 25px;
+
+            border-radius: 10px;
+
+            box-shadow:
+                0 3px 12px rgba(0,0,0,0.07);
+
+            overflow-x: auto;
+        }
+
+
+        table {
+
+            width: 100%;
+
+            border-collapse: collapse;
+
+            min-width: 800px;
+        }
+
+
+        th {
+
+            background: #e8f5e9;
+
+            color: #1b5e20;
+
+            padding: 14px;
+
+            text-align: left;
+
+            font-size: 14px;
+        }
+
+
+        td {
+
+            padding: 14px;
+
+            border-bottom:
+                1px solid #eee;
+
+            font-size: 14px;
+        }
+
+
+        tr:hover {
+            background: #fafafa;
+        }
+
+
+        /* Status */
+
+        .status {
+
+            padding: 5px 10px;
+
+            border-radius: 15px;
+
+            font-size: 12px;
+
+            font-weight: bold;
+        }
+
+
+        .growing {
+
+            background: #e8f5e9;
+
+            color: #2e7d32;
+        }
+
+
+        .harvested {
+
+            background: #fff3e0;
+
+            color: #ef6c00;
+        }
+
+
+        .planned {
+
+            background: #e3f2fd;
+
+            color: #1565c0;
+        }
+
+
+        /* Buttons */
+
+        .edit-btn,
+        .delete-btn {
+
+            border: none;
+
+            padding: 7px 10px;
+
+            border-radius: 5px;
+
+            cursor: pointer;
+
+            color: white;
+        }
+
+
+        .edit-btn {
+
+            background: #1976d2;
+
+            margin-right: 5px;
+        }
+
+
+        .delete-btn {
+            background: #c62828;
+        }
+
+
+        .edit-btn:hover {
+            background: #1565c0;
+        }
+
+
+        .delete-btn:hover {
+            background: #b71c1c;
+        }
+
+
+        /* =========================
+           RESPONSIVE
+        ========================= */
+
+        @media (max-width: 1000px) {
+
+            .stats {
+
+                grid-template-columns:
+                    1fr;
+            }
+
+            .form-grid {
+
+                grid-template-columns:
+                    1fr;
+            }
+        }
+
+
+        @media (max-width: 700px) {
+
+            .sidebar {
+
+                position: relative;
+
+                width: 100%;
+
+                height: auto;
+            }
+
+
+            .logout {
+
+                position: static;
+
+                margin-top: 20px;
+            }
+
+
+            .main {
+
+                margin-left: 0;
+
+                padding: 20px;
+            }
+
+
+            .top-header {
+
+                flex-direction: column;
+
+                align-items: flex-start;
+
+                gap: 15px;
+            }
+
+
+            .top-actions {
+
+                flex-direction: column;
+
+                align-items: stretch;
+
+                gap: 12px;
+            }
+
+
+            .search-box {
+
+                width: 100%;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =========================
+         SIDEBAR
+    ========================= -->
+
+    <aside class="sidebar">
+
+
+        <div class="logo">
+
+            🌱 Organic<span>Farm</span>
+
+        </div>
+
+
+        <!-- Farmer Information -->
+
+        <div class="farmer-info">
+
+            <div class="farmer-icon">
+                👨‍🌾
+            </div>
+
+            <h3>
+                Chandu
+            </h3>
+
+            <p>
+                Green Organic Farm
+            </p>
+
+        </div>
+
+
+        <!-- Navigation -->
+
+        <ul class="menu">
+
+            <li>
+
+                <a href="dashboard.html">
+
+                    <span class="menu-icon">🏠</span>
+
+                    Dashboard
+
+                </a>
+
+            </li>
+
+
+            <li>
+
+                <a href="crops.html"
+                   class="active">
+
+                    <span class="menu-icon">🌾</span>
+
+                    My Crops
+
+                </a>
+
+            </li>
+
+
+            <li>
+
+                <a href="fertilizers.html">
+
+                    <span class="menu-icon">🌿</span>
+
+                    Organic Fertilizers
+
+                </a>
+
+            </li>
+
+
+            <li>
+
+                <a href="pests.html">
+
+                    <span class="menu-icon">🐛</span>
+
+                    Pest Management
+
+                </a>
+
+            </li>
+
+
+            <li>
+
+                <a href="activities.html">
+
+                    <span class="menu-icon">📅</span>
+
+                    Farm Activities
+
+                </a>
+
+            </li>
+
+
+            <li>
+
+                <a href="harvest.html">
+
+                    <span class="menu-icon">🧺</span>
+
+                    Harvest Records
+
+                </a>
+
+            </li>
+
+
+            <li>
+
+                <a href="products.html">
+
+                    <span class="menu-icon">🛒</span>
+
+                    My Products
+
+                </a>
+
+            </li>
+
+
+            <li>
+
+                <a href="profile.html">
+
+                    <span class="menu-icon">👤</span>
+
+                    My Profile
+
+                </a>
+
+            </li>
+
+        </ul>
+
+
+        <!-- Logout -->
+
+        <div class="logout">
+
+            <a href="login.html">
+
+                🚪 Logout
+
+            </a>
+
+        </div>
+
+    </aside>
+
+
+    <!-- =========================
+         MAIN CONTENT
+    ========================= -->
+
+    <main class="main">
+
+
+        <!-- Header -->
+
+        <div class="top-header">
+
+            <div class="page-title">
+
+                <h1>
+                    🌾 My Crops
+                </h1>
+
+                <p>
+                    Manage and monitor your organic crops.
+                </p>
+
+            </div>
+
+
+            <div class="date">
+
+                📅 12 August 2026
+
+            </div>
+
+        </div>
+
+
+        <!-- =========================
+             STATISTICS
+        ========================= -->
+
+        <div class="stats">
+
+
+            <div class="stat-card">
+
+                <div>
+
+                    <h2 id="totalCrops">
+                        8
+                    </h2>
+
+                    <p>Total Crops</p>
+
+                </div>
+
+                <div class="stat-icon">
+                    🌾
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div>
+
+                    <h2 id="growingCrops">
+                        5
+                    </h2>
+
+                    <p>Growing</p>
+
+                </div>
+
+                <div class="stat-icon">
+                    🌱
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div>
+
+                    <h2 id="harvestedCrops">
+                        3
+                    </h2>
+
+                    <p>Harvested</p>
+
+                </div>
+
+                <div class="stat-icon">
+                    🧺
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+        <!-- =========================
+             ACTIONS
+        ========================= -->
+
+        <div class="top-actions">
+
+
+            <input
+                type="text"
+                class="search-box"
+                id="searchInput"
+                placeholder="🔍 Search crops..."
+                onkeyup="searchCrops()">
+
+
+            <button
+                class="add-btn"
+                onclick="showForm()">
+
+                + Add New Crop
+
+            </button>
+
+
+        </div>
+
+
+        <!-- =========================
+             ADD CROP FORM
+        ========================= -->
+
+        <div class="form-card"
+             id="cropForm">
+
+            <h2>
+                🌱 Add New Crop
+            </h2>
+
+
+            <form id="addCropForm">
+
+
+                <div class="form-grid">
+
+
+                    <!-- Crop Name -->
+
+                    <div class="form-group">
+
+                        <label>
+                            Crop Name
+                        </label>
+
+                        <input
+                            type="text"
+                            id="cropName"
+                            placeholder="Example: Tomato"
+                            required>
+
+                    </div>
+
+
+                    <!-- Crop Type -->
+
+                    <div class="form-group">
+
+                        <label>
+                            Crop Type
+                        </label>
+
+                        <select id="cropType" required>
+
+                            <option value="">
+                                Select Type
+                            </option>
+
+                            <option>
+                                Vegetable
+                            </option>
+
+                            <option>
+                                Fruit
+                            </option>
+
+                            <option>
+                                Grain
+                            </option>
+
+                            <option>
+                                Pulse
+                            </option>
+
+                            <option>
+                                Leafy Vegetable
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- Sowing Date -->
+
+                    <div class="form-group">
+
+                        <label>
+                            Sowing Date
+                        </label>
+
+                        <input
+                            type="date"
+                            id="sowingDate"
+                            required>
+
+                    </div>
+
+
+                    <!-- Harvest Date -->
+
+                    <div class="form-group">
+
+                        <label>
+                            Expected Harvest Date
+                        </label>
+
+                        <input
+                            type="date"
+                            id="harvestDate"
+                            required>
+
+                    </div>
+
+
+                    <!-- Soil -->
+
+                    <div class="form-group">
+
+                        <label>
+                            Soil Type
+                        </label>
+
+                        <select id="soilType" required>
+
+                            <option value="">
+                                Select Soil
+                            </option>
+
+                            <option>
+                                Alluvial Soil
+                            </option>
+
+                            <option>
+                                Black Soil
+                            </option>
+
+                            <option>
+                                Red Soil
+                            </option>
+
+                            <option>
+                                Sandy Soil
+                            </option>
+
+                            <option>
+                                Loamy Soil
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- Status -->
+
+                    <div class="form-group">
+
+                        <label>
+                            Status
+                        </label>
+
+                        <select id="cropStatus" required>
+
+                            <option value="Growing">
+                                Growing
+                            </option>
+
+                            <option value="Planned">
+                                Planned
+                            </option>
+
+                            <option value="Harvested">
+                                Harvested
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- Description -->
+
+                    <div class="form-group">
+
+                        <label>
+                            Description
+                        </label>
+
+                        <textarea
+                            id="cropDescription"
+                            placeholder="Enter crop details...">
+                        </textarea>
+
+                    </div>
+
+
+                </div>
+
+
+                <div class="form-buttons">
+
+                    <button
+                        type="submit"
+                        class="save-btn">
+
+                        Save Crop
+
+                    </button>
+
+
+                    <button
+                        type="button"
+                        class="cancel-btn"
+                        onclick="hideForm()">
+
+                        Cancel
+
+                    </button>
+
+                </div>
+
+
+            </form>
+
+        </div>
+
+
+        <!-- =========================
+             CROPS TABLE
+        ========================= -->
+
+        <div class="table-card">
+
+
+            <table id="cropTable">
+
+
+                <thead>
+
+                    <tr>
+
+                        <th>Crop</th>
+
+                        <th>Type</th>
+
+                        <th>Sowing Date</th>
+
+                        <th>Harvest Date</th>
+
+                        <th>Soil Type</th>
+
+                        <th>Status</th>
+
+                        <th>Actions</th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+
+                    <tr>
+
+                        <td>🍅 Tomato</td>
+
+                        <td>Vegetable</td>
+
+                        <td>10 Aug 2026</td>
+
+                        <td>10 Nov 2026</td>
+
+                        <td>Red Soil</td>
+
+                        <td>
+
+                            <span class="status growing">
+                                Growing
+                            </span>
+
+                        </td>
+
+                        <td>
+
+                            <button
+                                class="edit-btn"
+                                onclick="editCrop(this)">
+
+                                Edit
+
+                            </button>
+
+                            <button
+                                class="delete-btn"
+                                onclick="deleteCrop(this)">
+
+                                Delete
+
+                            </button>
+
+                        </td>
+
+                    </tr>
+
+
+                    <tr>
+
+                        <td>🌾 Rice</td>
+
+                        <td>Grain</td>
+
+                        <td>15 Jul 2026</td>
+
+                        <td>20 Nov 2026</td>
+
+                        <td>Alluvial Soil</td>
+
+                        <td>
+
+                            <span class="status growing">
+                                Growing
+                            </span>
+
+                        </td>
+
+                        <td>
+
+                            <button
+                                class="edit-btn"
+                                onclick="editCrop(this)">
+
+                                Edit
+
+                            </button>
+
+                            <button
+                                class="delete-btn"
+                                onclick="deleteCrop(this)">
+
+                                Delete
+
+                            </button>
+
+                        </td>
+
+                    </tr>
+
+
+                    <tr>
+
+                        <td>🥬 Spinach</td>
+
+                        <td>Leafy Vegetable</td>
+
+                        <td>01 Jul 2026</td>
+
+                        <td>30 Jul 2026</td>
+
+                        <td>Loamy Soil</td>
+
+                        <td>
+
+                            <span class="status harvested">
+                                Harvested
+                            </span>
+
+                        </td>
+
+                        <td>
+
+                            <button
+                                class="edit-btn"
+                                onclick="editCrop(this)">
+
+                                Edit
+
+                            </button>
+
+                            <button
+                                class="delete-btn"
+                                onclick="deleteCrop(this)">
+
+                                Delete
+
+                            </button>
+
+                        </td>
+
+                    </tr>
+
+
+                    <tr>
+
+                        <td>🍆 Brinjal</td>
+
+                        <td>Vegetable</td>
+
+                        <td>05 Aug 2026</td>
+
+                        <td>05 Nov 2026</td>
+
+                        <td>Red Soil</td>
+
+                        <td>
+
+                            <span class="status growing">
+                                Growing
+                            </span>
+
+                        </td>
+
+                        <td>
+
+                            <button
+                                class="edit-btn"
+                                onclick="editCrop(this)">
+
+                                Edit
+
+                            </button>
+
+                            <button
+                                class="delete-btn"
+                                onclick="deleteCrop(this)">
+
+                                Delete
+
+                            </button>
+
+                        </td>
+
+                    </tr>
+
+
+                    <tr>
+
+                        <td>🥕 Carrot</td>
+
+                        <td>Vegetable</td>
+
+                        <td>01 Sep 2026</td>
+
+                        <td>15 Dec 2026</td>
+
+                        <td>Sandy Soil</td>
+
+                        <td>
+
+                            <span class="status planned">
+                                Planned
+                            </span>
+
+                        </td>
+
+                        <td>
+
+                            <button
+                                class="edit-btn"
+                                onclick="editCrop(this)">
+
+                                Edit
+
+                            </button>
+
+                            <button
+                                class="delete-btn"
+                                onclick="deleteCrop(this)">
+
+                                Delete
+
+                            </button>
+
+                        </td>
+
+                    </tr>
+
+
+                </tbody>
+
+
+            </table>
+
+        </div>
+
+
+    </main>
+
+
+    <!-- =========================
+         JAVASCRIPT
+    ========================= -->
+
+    <script>
+
+
+        /* Show Form */
+
+        function showForm() {
+
+            document.getElementById("cropForm").style.display =
+                "block";
+
+            window.scrollTo({
+                top: 250,
+                behavior: "smooth"
+            });
+
+        }
+
+
+        /* Hide Form */
+
+        function hideForm() {
+
+            document.getElementById("cropForm").style.display =
+                "none";
+
+        }
+
+
+        /* Add Crop */
+
+        document
+            .getElementById("addCropForm")
+            .addEventListener("submit", function(event) {
+
+                event.preventDefault();
+
+
+                const cropName =
+                    document.getElementById("cropName").value;
+
+                const cropType =
+                    document.getElementById("cropType").value;
+
+                const sowingDate =
+                    document.getElementById("sowingDate").value;
+
+                const harvestDate =
+                    document.getElementById("harvestDate").value;
+
+                const soilType =
+                    document.getElementById("soilType").value;
+
+                const status =
+                    document.getElementById("cropStatus").value;
+
+
+                let icon = "🌱";
+
+
+                if (cropType === "Fruit") {
+                    icon = "🍎";
+                }
+
+                else if (cropType === "Grain") {
+                    icon = "🌾";
+                }
+
+                else if (cropType === "Vegetable") {
+                    icon = "🥕";
+                }
+
+                else if (cropType === "Leafy Vegetable") {
+                    icon = "🥬";
+                }
+
+
+                let statusClass = "growing";
+
+
+                if (status === "Harvested") {
+                    statusClass = "harvested";
+                }
+
+                else if (status === "Planned") {
+                    statusClass = "planned";
+                }
+
+
+                const table =
+                    document
+                    .getElementById("cropTable")
+                    .getElementsByTagName("tbody")[0];
+
+
+                const row =
+                    table.insertRow();
+
+
+                row.innerHTML = `
+
+                    <td>
+                        ${icon} ${cropName}
+                    </td>
+
+                    <td>
+                        ${cropType}
+                    </td>
+
+                    <td>
+                        ${formatDate(sowingDate)}
+                    </td>
+
+                    <td>
+                        ${formatDate(harvestDate)}
+                    </td>
+
+                    <td>
+                        ${soilType}
+                    </td>
+
+                    <td>
+
+                        <span class="status ${statusClass}">
+                            ${status}
+                        </span>
+
+                    </td>
+
+                    <td>
+
+                        <button
+                            class="edit-btn"
+                            onclick="editCrop(this)">
+
+                            Edit
+
+                        </button>
+
+                        <button
+                            class="delete-btn"
+                            onclick="deleteCrop(this)">
+
+                            Delete
+
+                        </button>
+
+                    </td>
+
+                `;
+
+
+                updateStatistics();
+
+
+                alert(
+                    "Crop added successfully!"
+                );
+
+
+                document
+                    .getElementById("addCropForm")
+                    .reset();
+
+
+                hideForm();
+
+            });
+
+
+        /* Format Date */
+
+        function formatDate(dateString) {
+
+            const date =
+                new Date(dateString);
+
+            return date.toLocaleDateString(
+                "en-GB",
+                {
+                    day: "2-digit",
+                    month: "short",
+                    year: "numeric"
+                }
+            );
+
+        }
+
+
+        /* Delete Crop */
+
+        function deleteCrop(button) {
+
+            const confirmation =
+                confirm(
+                    "Are you sure you want to delete this crop?"
+                );
+
+
+            if (confirmation) {
+
+                const row =
+                    button.closest("tr");
+
+                row.remove();
+
+                updateStatistics();
+
+                alert(
+                    "Crop deleted successfully!"
+                );
+
+            }
+
+        }
+
+
+        /* Edit Crop */
+
+        function editCrop(button) {
+
+            const row =
+                button.closest("tr");
+
+
+            const cropName =
+                row.cells[0].textContent.trim();
+
+            const type =
+                row.cells[1].textContent.trim();
+
+
+            alert(
+                "Edit feature selected for: " +
+                cropName +
+                "\\n\\n" +
+                "You can connect this button to an edit form or PHP/MySQL later."
+            );
+
+        }
+
+
+        /* Search Crops */
+
+        function searchCrops() {
+
+            const input =
+                document
+                .getElementById("searchInput")
+                .value
+                .toLowerCase();
+
+
+            const rows =
+                document
+                .getElementById("cropTable")
+                .getElementsByTagName("tbody")[0]
+                .getElementsByTagName("tr");
+
+
+            for (
+                let i = 0;
+                i < rows.length;
+                i++
+            ) {
+
+                const text =
+                    rows[i]
+                    .textContent
+                    .toLowerCase();
+
+
+                if (text.includes(input)) {
+
+                    rows[i].style.display = "";
+
+                }
+
+                else {
+
+                    rows[i].style.display = "none";
+
+                }
+
+            }
+
+        }
+
+
+        /* Update Statistics */
+
+        function updateStatistics() {
+
+            const rows =
+                document
+                .getElementById("cropTable")
+                .getElementsByTagName("tbody")[0]
+                .getElementsByTagName("tr");
+
+
+            let total = 0;
+
+            let growing = 0;
+
+            let harvested = 0;
+
+
+            for (
+                let i = 0;
+                i < rows.length;
+                i++
+            ) {
+
+                total++;
+
+
+                const status =
+                    rows[i]
+                    .cells[5]
+                    .textContent
+                    .trim();
+
+
+                if (status === "Growing") {
+
+                    growing++;
+
+                }
+
+                else if (status === "Harvested") {
+
+                    harvested++;
+
+                }
+
+            }
+
+
+            document
+                .getElementById("totalCrops")
+                .textContent = total;
+
+
+            document
+                .getElementById("growingCrops")
+                .textContent = growing;
+
+
+            document
+                .getElementById("harvestedCrops")
+                .textContent = harvested;
+
+        }
+
+    </script>
+
+
+</body>
+
+</html>
+```

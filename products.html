@@ -1,0 +1,1335 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>My Products - Organic Farming Management System</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f4f8f4;
+            color: #333;
+        }
+
+        /* =========================
+           SIDEBAR
+        ========================= */
+
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 250px;
+            height: 100vh;
+            background: #1b5e20;
+            color: white;
+            padding: 25px 15px;
+            z-index: 1000;
+        }
+
+        .logo {
+            text-align: center;
+            font-size: 25px;
+            font-weight: bold;
+            margin-bottom: 35px;
+        }
+
+        .logo span {
+            color: #a5d6a7;
+        }
+
+        .farmer-info {
+            text-align: center;
+            padding-bottom: 25px;
+            border-bottom: 1px solid rgba(255,255,255,0.2);
+            margin-bottom: 20px;
+        }
+
+        .farmer-icon {
+            width: 70px;
+            height: 70px;
+            margin: auto;
+            background: #66bb6a;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 35px;
+            margin-bottom: 10px;
+        }
+
+        .farmer-info h3 {
+            margin-bottom: 5px;
+        }
+
+        .farmer-info p {
+            font-size: 13px;
+            color: #c8e6c9;
+        }
+
+        .menu {
+            list-style: none;
+        }
+
+        .menu li {
+            margin: 7px 0;
+        }
+
+        .menu li a {
+            display: block;
+            padding: 13px 15px;
+            color: white;
+            text-decoration: none;
+            border-radius: 7px;
+            transition: 0.3s;
+        }
+
+        .menu li a:hover,
+        .menu li a.active {
+            background: #2e7d32;
+        }
+
+        .menu-icon {
+            margin-right: 10px;
+        }
+
+        .logout {
+            position: absolute;
+            bottom: 25px;
+            left: 15px;
+            right: 15px;
+        }
+
+        .logout a {
+            display: block;
+            text-align: center;
+            padding: 12px;
+            background: #c62828;
+            color: white;
+            text-decoration: none;
+            border-radius: 7px;
+        }
+
+        .logout a:hover {
+            background: #b71c1c;
+        }
+
+        /* =========================
+           MAIN
+        ========================= */
+
+        .main {
+            margin-left: 250px;
+            padding: 30px;
+        }
+
+        .top-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .page-title h1 {
+            color: #1b5e20;
+            margin-bottom: 5px;
+        }
+
+        .page-title p {
+            color: #777;
+        }
+
+        .date {
+            background: white;
+            padding: 12px 18px;
+            border-radius: 8px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+        }
+
+        /* =========================
+           SUMMARY CARDS
+        ========================= */
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 18px;
+            margin-bottom: 30px;
+        }
+
+        .summary-card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.07);
+        }
+
+        .summary-icon {
+            font-size: 30px;
+            margin-bottom: 8px;
+        }
+
+        .summary-card h2 {
+            color: #1b5e20;
+            margin-bottom: 5px;
+        }
+
+        .summary-card p {
+            color: #777;
+            font-size: 13px;
+        }
+
+        /* =========================
+           ADD PRODUCT FORM
+        ========================= */
+
+        .form-card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.07);
+            margin-bottom: 30px;
+        }
+
+        .form-card h2 {
+            color: #1b5e20;
+            margin-bottom: 20px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 18px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            font-weight: bold;
+            margin-bottom: 7px;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 7px;
+            outline: none;
+            font-size: 14px;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 90px;
+        }
+
+        .full-width {
+            grid-column: 1 / -1;
+        }
+
+        .add-btn {
+            margin-top: 20px;
+            padding: 13px 25px;
+            background: #2e7d32;
+            color: white;
+            border: none;
+            border-radius: 7px;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: bold;
+        }
+
+        .add-btn:hover {
+            background: #1b5e20;
+        }
+
+        /* =========================
+           PRODUCT LIST
+        ========================= */
+
+        .products-card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.07);
+        }
+
+        .products-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            gap: 15px;
+        }
+
+        .products-header h2 {
+            color: #1b5e20;
+        }
+
+        .search-box {
+            padding: 11px 13px;
+            border: 1px solid #ddd;
+            border-radius: 7px;
+            outline: none;
+            width: 250px;
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 22px;
+        }
+
+        .product-card {
+            border: 1px solid #e5e5e5;
+            border-radius: 10px;
+            overflow: hidden;
+            background: white;
+            transition: 0.3s;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 7px 18px rgba(0,0,0,0.12);
+        }
+
+        .product-image {
+            height: 150px;
+            background: #e8f5e9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 65px;
+        }
+
+        .product-info {
+            padding: 20px;
+        }
+
+        .product-info h3 {
+            color: #1b5e20;
+            margin-bottom: 8px;
+        }
+
+        .category {
+            display: inline-block;
+            background: #e8f5e9;
+            color: #2e7d32;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 12px;
+            margin-bottom: 12px;
+        }
+
+        .product-info p {
+            font-size: 14px;
+            color: #666;
+            line-height: 1.5;
+            margin-bottom: 8px;
+        }
+
+        .price {
+            font-size: 18px;
+            font-weight: bold;
+            color: #1b5e20;
+            margin-top: 10px;
+        }
+
+        .stock {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 12px;
+        }
+
+        .available {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .low-stock {
+            background: #fff3e0;
+            color: #ef6c00;
+        }
+
+        /* =========================
+           RESPONSIVE
+        ========================= */
+
+        @media (max-width: 1100px) {
+
+            .summary-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .product-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 750px) {
+
+            .sidebar {
+                position: relative;
+                width: 100%;
+                height: auto;
+            }
+
+            .logout {
+                position: static;
+                margin-top: 20px;
+            }
+
+            .main {
+                margin-left: 0;
+                padding: 20px;
+            }
+
+            .top-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+
+            .summary-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .product-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .products-header {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .search-box {
+                width: 100%;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =========================
+         SIDEBAR
+    ========================= -->
+
+    <aside class="sidebar">
+
+        <div class="logo">
+            🌱 Organic<span>Farm</span>
+        </div>
+
+
+        <div class="farmer-info">
+
+            <div class="farmer-icon">
+                👨‍🌾
+            </div>
+
+            <h3>Chandu</h3>
+
+            <p>Green Organic Farm</p>
+
+        </div>
+
+
+        <ul class="menu">
+
+            <li>
+                <a href="dashboard.html">
+                    <span class="menu-icon">🏠</span>
+                    Dashboard
+                </a>
+            </li>
+
+            <li>
+                <a href="crops.html">
+                    <span class="menu-icon">🌾</span>
+                    My Crops
+                </a>
+            </li>
+
+            <li>
+                <a href="fertilizers.html">
+                    <span class="menu-icon">🌿</span>
+                    Organic Fertilizers
+                </a>
+            </li>
+
+            <li>
+                <a href="pests.html">
+                    <span class="menu-icon">🐛</span>
+                    Pest Management
+                </a>
+            </li>
+
+            <li>
+                <a href="activities.html">
+                    <span class="menu-icon">📅</span>
+                    Farm Activities
+                </a>
+            </li>
+
+            <li>
+                <a href="harvest.html">
+                    <span class="menu-icon">🧺</span>
+                    Harvest Records
+                </a>
+            </li>
+
+            <li>
+                <a href="products.html" class="active">
+                    <span class="menu-icon">🛒</span>
+                    My Products
+                </a>
+            </li>
+
+            <li>
+                <a href="profile.html">
+                    <span class="menu-icon">👤</span>
+                    My Profile
+                </a>
+            </li>
+
+        </ul>
+
+
+        <div class="logout">
+
+            <a href="login.html">
+                🚪 Logout
+            </a>
+
+        </div>
+
+    </aside>
+
+
+    <!-- =========================
+         MAIN CONTENT
+    ========================= -->
+
+    <main class="main">
+
+
+        <!-- Header -->
+
+        <div class="top-header">
+
+            <div class="page-title">
+
+                <h1>
+                    🛒 My Organic Products
+                </h1>
+
+                <p>
+                    Manage and display your organic farm products.
+                </p>
+
+            </div>
+
+
+            <div class="date">
+                📅 12 August 2026
+            </div>
+
+        </div>
+
+
+        <!-- =========================
+             SUMMARY
+        ========================= -->
+
+        <div class="summary-grid">
+
+
+            <div class="summary-card">
+
+                <div class="summary-icon">
+                    🛒
+                </div>
+
+                <h2 id="totalProducts">
+                    6
+                </h2>
+
+                <p>
+                    Total Products
+                </p>
+
+            </div>
+
+
+            <div class="summary-card">
+
+                <div class="summary-icon">
+                    🌾
+                </div>
+
+                <h2>
+                    4
+                </h2>
+
+                <p>
+                    Crop Categories
+                </p>
+
+            </div>
+
+
+            <div class="summary-card">
+
+                <div class="summary-icon">
+                    📦
+                </div>
+
+                <h2 id="totalStock">
+                    245
+                </h2>
+
+                <p>
+                    Total Stock (kg)
+                </p>
+
+            </div>
+
+
+            <div class="summary-card">
+
+                <div class="summary-icon">
+                    🌱
+                </div>
+
+                <h2>
+                    100%
+                </h2>
+
+                <p>
+                    Organic Products
+                </p>
+
+            </div>
+
+
+        </div>
+
+
+        <!-- =========================
+             ADD PRODUCT
+        ========================= -->
+
+        <div class="form-card">
+
+            <h2>
+                ➕ Add New Product
+            </h2>
+
+
+            <form id="productForm">
+
+
+                <div class="form-grid">
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Product Name
+                        </label>
+
+                        <input
+                            type="text"
+                            id="productName"
+                            placeholder="Example: Organic Tomato"
+                            required>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Category
+                        </label>
+
+                        <select
+                            id="productCategory"
+                            required>
+
+                            <option value="">
+                                Select Category
+                            </option>
+
+                            <option value="Vegetable">
+                                Vegetable
+                            </option>
+
+                            <option value="Fruit">
+                                Fruit
+                            </option>
+
+                            <option value="Grain">
+                                Grain
+                            </option>
+
+                            <option value="Leafy Vegetable">
+                                Leafy Vegetable
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Quantity (kg)
+                        </label>
+
+                        <input
+                            type="number"
+                            id="quantity"
+                            min="1"
+                            placeholder="Enter quantity"
+                            required>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Price per kg (₹)
+                        </label>
+
+                        <input
+                            type="number"
+                            id="price"
+                            min="1"
+                            placeholder="Enter price"
+                            required>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Harvest Date
+                        </label>
+
+                        <input
+                            type="date"
+                            id="harvestDate"
+                            required>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Product Status
+                        </label>
+
+                        <select
+                            id="productStatus"
+                            required>
+
+                            <option value="Available">
+                                Available
+                            </option>
+
+                            <option value="Low Stock">
+                                Low Stock
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="form-group full-width">
+
+                        <label>
+                            Product Description
+                        </label>
+
+                        <textarea
+                            id="description"
+                            placeholder="Enter product details..."
+                            required></textarea>
+
+                    </div>
+
+
+                </div>
+
+
+                <button
+                    type="submit"
+                    class="add-btn">
+
+                    ➕ Add Product
+
+                </button>
+
+
+            </form>
+
+        </div>
+
+
+        <!-- =========================
+             PRODUCT LIST
+        ========================= -->
+
+        <div class="products-card">
+
+
+            <div class="products-header">
+
+                <h2>
+                    🌱 Product List
+                </h2>
+
+
+                <input
+                    type="text"
+                    id="searchProduct"
+                    class="search-box"
+                    placeholder="🔍 Search products..."
+                    onkeyup="searchProducts()">
+
+            </div>
+
+
+            <div
+                class="product-grid"
+                id="productGrid">
+
+
+                <!-- Tomato -->
+
+                <div class="product-card">
+
+                    <div class="product-image">
+                        🍅
+                    </div>
+
+                    <div class="product-info">
+
+                        <h3>
+                            Organic Tomato
+                        </h3>
+
+                        <span class="category">
+                            Vegetable
+                        </span>
+
+                        <p>
+                            Fresh naturally grown organic tomatoes.
+                        </p>
+
+                        <p>
+                            <strong>
+                                Stock:
+                            </strong>
+                            50 kg
+                        </p>
+
+                        <p class="price">
+                            ₹60 / kg
+                        </p>
+
+                        <span class="stock available">
+                            Available
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Rice -->
+
+                <div class="product-card">
+
+                    <div class="product-image">
+                        🌾
+                    </div>
+
+                    <div class="product-info">
+
+                        <h3>
+                            Organic Rice
+                        </h3>
+
+                        <span class="category">
+                            Grain
+                        </span>
+
+                        <p>
+                            Naturally cultivated organic rice.
+                        </p>
+
+                        <p>
+                            <strong>
+                                Stock:
+                            </strong>
+                            100 kg
+                        </p>
+
+                        <p class="price">
+                            ₹75 / kg
+                        </p>
+
+                        <span class="stock available">
+                            Available
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Brinjal -->
+
+                <div class="product-card">
+
+                    <div class="product-image">
+                        🍆
+                    </div>
+
+                    <div class="product-info">
+
+                        <h3>
+                            Organic Brinjal
+                        </h3>
+
+                        <span class="category">
+                            Vegetable
+                        </span>
+
+                        <p>
+                            Fresh organic brinjal grown without
+                            synthetic pesticides.
+                        </p>
+
+                        <p>
+                            <strong>
+                                Stock:
+                            </strong>
+                            30 kg
+                        </p>
+
+                        <p class="price">
+                            ₹50 / kg
+                        </p>
+
+                        <span class="stock available">
+                            Available
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Spinach -->
+
+                <div class="product-card">
+
+                    <div class="product-image">
+                        🥬
+                    </div>
+
+                    <div class="product-info">
+
+                        <h3>
+                            Organic Spinach
+                        </h3>
+
+                        <span class="category">
+                            Leafy Vegetable
+                        </span>
+
+                        <p>
+                            Fresh green organic spinach.
+                        </p>
+
+                        <p>
+                            <strong>
+                                Stock:
+                            </strong>
+                            25 kg
+                        </p>
+
+                        <p class="price">
+                            ₹40 / kg
+                        </p>
+
+                        <span class="stock low-stock">
+                            Low Stock
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Chilli -->
+
+                <div class="product-card">
+
+                    <div class="product-image">
+                        🌶️
+                    </div>
+
+                    <div class="product-info">
+
+                        <h3>
+                            Organic Chilli
+                        </h3>
+
+                        <span class="category">
+                            Vegetable
+                        </span>
+
+                        <p>
+                            Fresh organically grown green chilli.
+                        </p>
+
+                        <p>
+                            <strong>
+                                Stock:
+                            </strong>
+                            20 kg
+                        </p>
+
+                        <p class="price">
+                            ₹90 / kg
+                        </p>
+
+                        <span class="stock low-stock">
+                            Low Stock
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Banana -->
+
+                <div class="product-card">
+
+                    <div class="product-image">
+                        🍌
+                    </div>
+
+                    <div class="product-info">
+
+                        <h3>
+                            Organic Banana
+                        </h3>
+
+                        <span class="category">
+                            Fruit
+                        </span>
+
+                        <p>
+                            Naturally grown fresh organic bananas.
+                        </p>
+
+                        <p>
+                            <strong>
+                                Stock:
+                            </strong>
+                            20 kg
+                        </p>
+
+                        <p class="price">
+                            ₹55 / kg
+                        </p>
+
+                        <span class="stock available">
+                            Available
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+
+    </main>
+
+
+    <!-- =========================
+         JAVASCRIPT
+    ========================= -->
+
+    <script>
+
+
+        /* =========================
+           ADD PRODUCT
+        ========================= */
+
+        document
+        .getElementById("productForm")
+        .addEventListener(
+            "submit",
+            function(event) {
+
+                event.preventDefault();
+
+
+                const name =
+                    document
+                    .getElementById("productName")
+                    .value;
+
+
+                const category =
+                    document
+                    .getElementById("productCategory")
+                    .value;
+
+
+                const quantity =
+                    document
+                    .getElementById("quantity")
+                    .value;
+
+
+                const price =
+                    document
+                    .getElementById("price")
+                    .value;
+
+
+                const status =
+                    document
+                    .getElementById("productStatus")
+                    .value;
+
+
+                const description =
+                    document
+                    .getElementById("description")
+                    .value;
+
+
+                let icon = "🌱";
+
+
+                if (category === "Vegetable") {
+                    icon = "🥕";
+                }
+
+                else if (category === "Fruit") {
+                    icon = "🍎";
+                }
+
+                else if (category === "Grain") {
+                    icon = "🌾";
+                }
+
+                else if (category === "Leafy Vegetable") {
+                    icon = "🥬";
+                }
+
+
+                const statusClass =
+                    status === "Available"
+                    ? "available"
+                    : "low-stock";
+
+
+                const productGrid =
+                    document
+                    .getElementById("productGrid");
+
+
+                const card =
+                    document.createElement("div");
+
+
+                card.className =
+                    "product-card";
+
+
+                card.innerHTML = `
+
+                    <div class="product-image">
+                        ${icon}
+                    </div>
+
+                    <div class="product-info">
+
+                        <h3>
+                            ${name}
+                        </h3>
+
+                        <span class="category">
+                            ${category}
+                        </span>
+
+                        <p>
+                            ${description}
+                        </p>
+
+                        <p>
+                            <strong>
+                                Stock:
+                            </strong>
+                            ${quantity} kg
+                        </p>
+
+                        <p class="price">
+                            ₹${price} / kg
+                        </p>
+
+                        <span class="stock ${statusClass}">
+                            ${status}
+                        </span>
+
+                    </div>
+
+                `;
+
+
+                productGrid.prepend(card);
+
+
+                document
+                .getElementById("productForm")
+                .reset();
+
+
+                updateProductCount();
+
+
+                alert(
+                    "Product added successfully!"
+                );
+
+            }
+        );
+
+
+        /* =========================
+           SEARCH PRODUCTS
+        ========================= */
+
+        function searchProducts() {
+
+            const searchText =
+                document
+                .getElementById("searchProduct")
+                .value
+                .toLowerCase();
+
+
+            const cards =
+                document
+                .querySelectorAll(".product-card");
+
+
+            cards.forEach(function(card) {
+
+                const text =
+                    card
+                    .textContent
+                    .toLowerCase();
+
+
+                if (
+                    text.includes(searchText)
+                ) {
+
+                    card.style.display =
+                        "block";
+
+                }
+
+                else {
+
+                    card.style.display =
+                        "none";
+
+                }
+
+            });
+
+        }
+
+
+        /* =========================
+           UPDATE PRODUCT COUNT
+        ========================= */
+
+        function updateProductCount() {
+
+            const products =
+                document
+                .querySelectorAll(
+                    ".product-card"
+                );
+
+
+            document
+            .getElementById(
+                "totalProducts"
+            )
+            .textContent =
+                products.length;
+
+        }
+
+
+    </script>
+
+
+</body>
+
+</html>
+```

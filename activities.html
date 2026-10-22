@@ -1,0 +1,1354 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Farm Activities - Organic Farming Management System</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f4f8f4;
+            color: #333;
+        }
+
+        /* =========================
+           SIDEBAR
+        ========================= */
+
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 250px;
+            height: 100vh;
+            background: #1b5e20;
+            color: white;
+            padding: 25px 15px;
+            z-index: 1000;
+        }
+
+        .logo {
+            text-align: center;
+            font-size: 25px;
+            font-weight: bold;
+            margin-bottom: 35px;
+        }
+
+        .logo span {
+            color: #a5d6a7;
+        }
+
+        .farmer-info {
+            text-align: center;
+            padding-bottom: 25px;
+            border-bottom: 1px solid rgba(255,255,255,0.2);
+            margin-bottom: 20px;
+        }
+
+        .farmer-icon {
+            width: 70px;
+            height: 70px;
+            margin: auto;
+            background: #66bb6a;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 35px;
+            margin-bottom: 10px;
+        }
+
+        .farmer-info h3 {
+            margin-bottom: 5px;
+        }
+
+        .farmer-info p {
+            font-size: 13px;
+            color: #c8e6c9;
+        }
+
+        .menu {
+            list-style: none;
+        }
+
+        .menu li {
+            margin: 7px 0;
+        }
+
+        .menu li a {
+            display: block;
+            padding: 13px 15px;
+            color: white;
+            text-decoration: none;
+            border-radius: 7px;
+            transition: 0.3s;
+        }
+
+        .menu li a:hover,
+        .menu li a.active {
+            background: #2e7d32;
+        }
+
+        .menu-icon {
+            margin-right: 10px;
+        }
+
+        .logout {
+            position: absolute;
+            bottom: 25px;
+            left: 15px;
+            right: 15px;
+        }
+
+        .logout a {
+            display: block;
+            text-align: center;
+            padding: 12px;
+            background: #c62828;
+            color: white;
+            text-decoration: none;
+            border-radius: 7px;
+        }
+
+        .logout a:hover {
+            background: #b71c1c;
+        }
+
+        /* =========================
+           MAIN CONTENT
+        ========================= */
+
+        .main {
+            margin-left: 250px;
+            padding: 30px;
+        }
+
+        .top-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .page-title h1 {
+            color: #1b5e20;
+            margin-bottom: 5px;
+        }
+
+        .page-title p {
+            color: #777;
+        }
+
+        .date {
+            background: white;
+            padding: 12px 18px;
+            border-radius: 8px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+        }
+
+        /* =========================
+           ACTIVITY FORM
+        ========================= */
+
+        .form-card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.07);
+            margin-bottom: 30px;
+        }
+
+        .form-card h2 {
+            color: #1b5e20;
+            margin-bottom: 20px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 18px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            font-weight: bold;
+            color: #444;
+            margin-bottom: 7px;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 7px;
+            outline: none;
+            font-size: 14px;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 90px;
+        }
+
+        .full-width {
+            grid-column: 1 / -1;
+        }
+
+        .add-btn {
+            margin-top: 20px;
+            padding: 13px 25px;
+            background: #2e7d32;
+            color: white;
+            border: none;
+            border-radius: 7px;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: bold;
+        }
+
+        .add-btn:hover {
+            background: #1b5e20;
+        }
+
+        /* =========================
+           ACTIVITY SUMMARY
+        ========================= */
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 18px;
+            margin-bottom: 30px;
+        }
+
+        .summary-card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.07);
+            text-align: center;
+        }
+
+        .summary-icon {
+            font-size: 30px;
+            margin-bottom: 8px;
+        }
+
+        .summary-card h3 {
+            font-size: 28px;
+            color: #1b5e20;
+            margin-bottom: 5px;
+        }
+
+        .summary-card p {
+            color: #777;
+            font-size: 13px;
+        }
+
+        /* =========================
+           ACTIVITY HISTORY
+        ========================= */
+
+        .history-card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.07);
+        }
+
+        .history-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .history-header h2 {
+            color: #1b5e20;
+        }
+
+        .search-box {
+            padding: 11px 13px;
+            border: 1px solid #ddd;
+            border-radius: 7px;
+            outline: none;
+        }
+
+        .activity-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .activity-table th {
+            background: #e8f5e9;
+            color: #1b5e20;
+            padding: 13px;
+            text-align: left;
+        }
+
+        .activity-table td {
+            padding: 13px;
+            border-bottom: 1px solid #eee;
+            font-size: 14px;
+        }
+
+        .activity-table tr:hover {
+            background: #f9fcf9;
+        }
+
+        .activity-type {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 15px;
+            background: #e8f5e9;
+            color: #2e7d32;
+            font-size: 12px;
+        }
+
+        .status {
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 12px;
+        }
+
+        .completed {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .pending {
+            background: #fff3e0;
+            color: #ef6c00;
+        }
+
+        /* =========================
+           UPCOMING ACTIVITIES
+        ========================= */
+
+        .upcoming-card {
+            background: #1b5e20;
+            color: white;
+            padding: 25px;
+            border-radius: 12px;
+            margin-top: 30px;
+        }
+
+        .upcoming-card h2 {
+            margin-bottom: 20px;
+        }
+
+        .upcoming-list {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+        }
+
+        .upcoming-item {
+            background: rgba(255,255,255,0.1);
+            padding: 18px;
+            border-radius: 8px;
+        }
+
+        .upcoming-item h3 {
+            margin-bottom: 8px;
+        }
+
+        .upcoming-item p {
+            color: #dcedc8;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        /* =========================
+           RESPONSIVE
+        ========================= */
+
+        @media (max-width: 1100px) {
+
+            .summary-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .upcoming-list {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 750px) {
+
+            .sidebar {
+                position: relative;
+                width: 100%;
+                height: auto;
+            }
+
+            .logout {
+                position: static;
+                margin-top: 20px;
+            }
+
+            .main {
+                margin-left: 0;
+                padding: 20px;
+            }
+
+            .top-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .summary-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .history-card {
+                overflow-x: auto;
+            }
+
+            .activity-table {
+                min-width: 750px;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =========================
+         SIDEBAR
+    ========================= -->
+
+    <aside class="sidebar">
+
+        <div class="logo">
+            🌱 Organic<span>Farm</span>
+        </div>
+
+
+        <div class="farmer-info">
+
+            <div class="farmer-icon">
+                👨‍🌾
+            </div>
+
+            <h3>Chandu</h3>
+
+            <p>Green Organic Farm</p>
+
+        </div>
+
+
+        <ul class="menu">
+
+            <li>
+                <a href="dashboard.html">
+                    <span class="menu-icon">🏠</span>
+                    Dashboard
+                </a>
+            </li>
+
+            <li>
+                <a href="crops.html">
+                    <span class="menu-icon">🌾</span>
+                    My Crops
+                </a>
+            </li>
+
+            <li>
+                <a href="fertilizers.html">
+                    <span class="menu-icon">🌿</span>
+                    Organic Fertilizers
+                </a>
+            </li>
+
+            <li>
+                <a href="pests.html">
+                    <span class="menu-icon">🐛</span>
+                    Pest Management
+                </a>
+            </li>
+
+            <li>
+                <a href="activities.html" class="active">
+                    <span class="menu-icon">📅</span>
+                    Farm Activities
+                </a>
+            </li>
+
+            <li>
+                <a href="harvest.html">
+                    <span class="menu-icon">🧺</span>
+                    Harvest Records
+                </a>
+            </li>
+
+            <li>
+                <a href="products.html">
+                    <span class="menu-icon">🛒</span>
+                    My Products
+                </a>
+            </li>
+
+            <li>
+                <a href="profile.html">
+                    <span class="menu-icon">👤</span>
+                    My Profile
+                </a>
+            </li>
+
+        </ul>
+
+
+        <div class="logout">
+
+            <a href="login.html">
+                🚪 Logout
+            </a>
+
+        </div>
+
+    </aside>
+
+
+    <!-- =========================
+         MAIN CONTENT
+    ========================= -->
+
+    <main class="main">
+
+
+        <!-- Header -->
+
+        <div class="top-header">
+
+            <div class="page-title">
+
+                <h1>
+                    📅 Farm Activities
+                </h1>
+
+                <p>
+                    Record and manage your daily organic farming activities.
+                </p>
+
+            </div>
+
+
+            <div class="date">
+                📅 12 August 2026
+            </div>
+
+        </div>
+
+
+        <!-- =========================
+             ADD ACTIVITY FORM
+        ========================= -->
+
+        <div class="form-card">
+
+            <h2>
+                ➕ Add Farm Activity
+            </h2>
+
+
+            <form id="activityForm">
+
+
+                <div class="form-grid">
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Activity Date
+                        </label>
+
+                        <input
+                            type="date"
+                            id="activityDate"
+                            required>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Crop
+                        </label>
+
+                        <select
+                            id="crop"
+                            required>
+
+                            <option value="">
+                                Select Crop
+                            </option>
+
+                            <option value="Tomato">
+                                Tomato
+                            </option>
+
+                            <option value="Rice">
+                                Rice
+                            </option>
+
+                            <option value="Brinjal">
+                                Brinjal
+                            </option>
+
+                            <option value="Spinach">
+                                Spinach
+                            </option>
+
+                            <option value="Chilli">
+                                Chilli
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Activity Type
+                        </label>
+
+                        <select
+                            id="activityType"
+                            required>
+
+                            <option value="">
+                                Select Activity
+                            </option>
+
+                            <option value="Sowing">
+                                🌱 Sowing
+                            </option>
+
+                            <option value="Irrigation">
+                                💧 Irrigation
+                            </option>
+
+                            <option value="Weeding">
+                                🌿 Weeding
+                            </option>
+
+                            <option value="Fertilization">
+                                ♻️ Fertilization
+                            </option>
+
+                            <option value="Pest Inspection">
+                                🐛 Pest Inspection
+                            </option>
+
+                            <option value="Harvesting">
+                                🧺 Harvesting
+                            </option>
+
+                            <option value="Other">
+                                📌 Other
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Status
+                        </label>
+
+                        <select
+                            id="status"
+                            required>
+
+                            <option value="Completed">
+                                Completed
+                            </option>
+
+                            <option value="Pending">
+                                Pending
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="form-group full-width">
+
+                        <label>
+                            Description / Notes
+                        </label>
+
+                        <textarea
+                            id="description"
+                            placeholder="Enter details about the activity..."
+                            required></textarea>
+
+                    </div>
+
+
+                </div>
+
+
+                <button
+                    type="submit"
+                    class="add-btn">
+
+                    ➕ Add Activity
+
+                </button>
+
+
+            </form>
+
+        </div>
+
+
+        <!-- =========================
+             SUMMARY
+        ========================= -->
+
+        <div class="summary-grid">
+
+
+            <div class="summary-card">
+
+                <div class="summary-icon">
+                    📋
+                </div>
+
+                <h3 id="totalActivities">
+                    12
+                </h3>
+
+                <p>
+                    Total Activities
+                </p>
+
+            </div>
+
+
+            <div class="summary-card">
+
+                <div class="summary-icon">
+                    ✅
+                </div>
+
+                <h3 id="completedActivities">
+                    9
+                </h3>
+
+                <p>
+                    Completed
+                </p>
+
+            </div>
+
+
+            <div class="summary-card">
+
+                <div class="summary-icon">
+                    ⏳
+                </div>
+
+                <h3 id="pendingActivities">
+                    3
+                </h3>
+
+                <p>
+                    Pending
+                </p>
+
+            </div>
+
+
+            <div class="summary-card">
+
+                <div class="summary-icon">
+                    🌾
+                </div>
+
+                <h3>
+                    5
+                </h3>
+
+                <p>
+                    Active Crops
+                </p>
+
+            </div>
+
+
+        </div>
+
+
+        <!-- =========================
+             ACTIVITY HISTORY
+        ========================= -->
+
+        <div class="history-card">
+
+
+            <div class="history-header">
+
+                <h2>
+                    📋 Activity History
+                </h2>
+
+                <input
+                    type="text"
+                    id="searchActivity"
+                    class="search-box"
+                    placeholder="🔍 Search activity..."
+                    onkeyup="searchActivities()">
+
+            </div>
+
+
+            <table class="activity-table">
+
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            Date
+                        </th>
+
+                        <th>
+                            Crop
+                        </th>
+
+                        <th>
+                            Activity
+                        </th>
+
+                        <th>
+                            Description
+                        </th>
+
+                        <th>
+                            Status
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody id="activityTable">
+
+
+                    <tr>
+
+                        <td>
+                            10 Aug 2026
+                        </td>
+
+                        <td>
+                            Tomato
+                        </td>
+
+                        <td>
+                            <span class="activity-type">
+                                Irrigation
+                            </span>
+                        </td>
+
+                        <td>
+                            Morning irrigation completed.
+                        </td>
+
+                        <td>
+                            <span class="status completed">
+                                Completed
+                            </span>
+                        </td>
+
+                    </tr>
+
+
+                    <tr>
+
+                        <td>
+                            09 Aug 2026
+                        </td>
+
+                        <td>
+                            Rice
+                        </td>
+
+                        <td>
+                            <span class="activity-type">
+                                Pest Inspection
+                            </span>
+                        </td>
+
+                        <td>
+                            Checked crop for pest activity.
+                        </td>
+
+                        <td>
+                            <span class="status completed">
+                                Completed
+                            </span>
+                        </td>
+
+                    </tr>
+
+
+                    <tr>
+
+                        <td>
+                            08 Aug 2026
+                        </td>
+
+                        <td>
+                            Brinjal
+                        </td>
+
+                        <td>
+                            <span class="activity-type">
+                                Weeding
+                            </span>
+                        </td>
+
+                        <td>
+                            Removed weeds around plants.
+                        </td>
+
+                        <td>
+                            <span class="status completed">
+                                Completed
+                            </span>
+                        </td>
+
+                    </tr>
+
+
+                    <tr>
+
+                        <td>
+                            13 Aug 2026
+                        </td>
+
+                        <td>
+                            Tomato
+                        </td>
+
+                        <td>
+                            <span class="activity-type">
+                                Fertilization
+                            </span>
+                        </td>
+
+                        <td>
+                            Organic compost application planned.
+                        </td>
+
+                        <td>
+                            <span class="status pending">
+                                Pending
+                            </span>
+                        </td>
+
+                    </tr>
+
+
+                    <tr>
+
+                        <td>
+                            15 Aug 2026
+                        </td>
+
+                        <td>
+                            Rice
+                        </td>
+
+                        <td>
+                            <span class="activity-type">
+                                Irrigation
+                            </span>
+
+                        </td>
+
+                        <td>
+                            Scheduled irrigation activity.
+                        </td>
+
+                        <td>
+                            <span class="status pending">
+                                Pending
+                            </span>
+                        </td>
+
+                    </tr>
+
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+
+        <!-- =========================
+             UPCOMING ACTIVITIES
+        ========================= -->
+
+        <div class="upcoming-card">
+
+            <h2>
+                🔔 Upcoming Activities
+            </h2>
+
+
+            <div class="upcoming-list">
+
+
+                <div class="upcoming-item">
+
+                    <h3>
+                        💧 Irrigation
+                    </h3>
+
+                    <p>
+                        Rice field irrigation scheduled
+                        for 15 August 2026.
+                    </p>
+
+                </div>
+
+
+                <div class="upcoming-item">
+
+                    <h3>
+                        ♻️ Fertilization
+                    </h3>
+
+                    <p>
+                        Organic compost application for
+                        tomato crop scheduled for 13 August.
+                    </p>
+
+                </div>
+
+
+                <div class="upcoming-item">
+
+                    <h3>
+                        🐛 Pest Inspection
+                    </h3>
+
+                    <p>
+                        Inspect brinjal plants for pest
+                        symptoms during the next field visit.
+                    </p>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+
+    </main>
+
+
+    <!-- =========================
+         JAVASCRIPT
+    ========================= -->
+
+    <script>
+
+
+        const activityForm =
+            document.getElementById("activityForm");
+
+
+        activityForm.addEventListener(
+            "submit",
+            function(event) {
+
+                event.preventDefault();
+
+
+                const date =
+                    document.getElementById(
+                        "activityDate"
+                    ).value;
+
+
+                const crop =
+                    document.getElementById(
+                        "crop"
+                    ).value;
+
+
+                const activity =
+                    document.getElementById(
+                        "activityType"
+                    ).value;
+
+
+                const status =
+                    document.getElementById(
+                        "status"
+                    ).value;
+
+
+                const description =
+                    document.getElementById(
+                        "description"
+                    ).value;
+
+
+                if (
+                    date === "" ||
+                    crop === "" ||
+                    activity === "" ||
+                    description === ""
+                ) {
+
+                    alert(
+                        "Please fill all required fields."
+                    );
+
+                    return;
+
+                }
+
+
+                const table =
+                    document.getElementById(
+                        "activityTable"
+                    );
+
+
+                const row =
+                    document.createElement("tr");
+
+
+                const dateObject =
+                    new Date(date);
+
+
+                const formattedDate =
+                    dateObject.toLocaleDateString(
+                        "en-GB",
+                        {
+                            day: "2-digit",
+                            month: "short",
+                            year: "numeric"
+                        }
+                    );
+
+
+                const statusClass =
+                    status === "Completed"
+                    ? "completed"
+                    : "pending";
+
+
+                row.innerHTML = `
+
+                    <td>
+                        ${formattedDate}
+                    </td>
+
+                    <td>
+                        ${crop}
+                    </td>
+
+                    <td>
+                        <span class="activity-type">
+                            ${activity}
+                        </span>
+                    </td>
+
+                    <td>
+                        ${description}
+                    </td>
+
+                    <td>
+                        <span class="status ${statusClass}">
+                            ${status}
+                        </span>
+                    </td>
+
+                `;
+
+
+                table.prepend(row);
+
+
+                activityForm.reset();
+
+
+                alert(
+                    "Farm activity added successfully!"
+                );
+
+
+                updateSummary();
+
+            }
+        );
+
+
+        /* =========================
+           SEARCH ACTIVITIES
+        ========================= */
+
+        function searchActivities() {
+
+            const searchText =
+                document
+                .getElementById(
+                    "searchActivity"
+                )
+                .value
+                .toLowerCase();
+
+
+            const rows =
+                document
+                .querySelectorAll(
+                    "#activityTable tr"
+                );
+
+
+            rows.forEach(function(row) {
+
+                const text =
+                    row.textContent
+                    .toLowerCase();
+
+
+                if (
+                    text.includes(searchText)
+                ) {
+
+                    row.style.display = "";
+
+                } else {
+
+                    row.style.display = "none";
+
+                }
+
+            });
+
+        }
+
+
+        /* =========================
+           UPDATE SUMMARY
+        ========================= */
+
+        function updateSummary() {
+
+            const rows =
+                document.querySelectorAll(
+                    "#activityTable tr"
+                );
+
+
+            let completed = 0;
+            let pending = 0;
+
+
+            rows.forEach(function(row) {
+
+                const status =
+                    row
+                    .querySelector(".status");
+
+
+                if (status) {
+
+                    if (
+                        status
+                        .classList
+                        .contains("completed")
+                    ) {
+
+                        completed++;
+
+                    }
+
+                    if (
+                        status
+                        .classList
+                        .contains("pending")
+                    ) {
+
+                        pending++;
+
+                    }
+
+                }
+
+            });
+
+
+            document.getElementById(
+                "totalActivities"
+            ).textContent =
+                rows.length;
+
+
+            document.getElementById(
+                "completedActivities"
+            ).textContent =
+                completed;
+
+
+            document.getElementById(
+                "pendingActivities"
+            ).textContent =
+                pending;
+
+        }
+
+    </script>
+
+
+</body>
+
+</html>
+```

@@ -1,0 +1,1462 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Organic Fertilizers - Organic Farming Management System</title>
+
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+
+        body {
+            background: #f4f8f4;
+            color: #333;
+        }
+
+
+        /* =========================
+           SIDEBAR
+        ========================= */
+
+        .sidebar {
+
+            position: fixed;
+
+            left: 0;
+            top: 0;
+
+            width: 250px;
+            height: 100vh;
+
+            background: #1b5e20;
+
+            color: white;
+
+            padding: 25px 15px;
+
+            z-index: 1000;
+        }
+
+
+        .logo {
+
+            text-align: center;
+
+            font-size: 25px;
+
+            font-weight: bold;
+
+            margin-bottom: 35px;
+        }
+
+
+        .logo span {
+            color: #a5d6a7;
+        }
+
+
+        /* Farmer Information */
+
+        .farmer-info {
+
+            text-align: center;
+
+            padding-bottom: 25px;
+
+            border-bottom:
+                1px solid rgba(255,255,255,0.2);
+
+            margin-bottom: 20px;
+        }
+
+
+        .farmer-icon {
+
+            width: 70px;
+            height: 70px;
+
+            margin: auto;
+
+            background: #66bb6a;
+
+            border-radius: 50%;
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            font-size: 35px;
+
+            margin-bottom: 10px;
+        }
+
+
+        .farmer-info h3 {
+            margin-bottom: 5px;
+        }
+
+
+        .farmer-info p {
+
+            font-size: 13px;
+
+            color: #c8e6c9;
+        }
+
+
+        /* Menu */
+
+        .menu {
+            list-style: none;
+        }
+
+
+        .menu li {
+            margin: 7px 0;
+        }
+
+
+        .menu li a {
+
+            display: block;
+
+            padding: 13px 15px;
+
+            color: white;
+
+            text-decoration: none;
+
+            border-radius: 7px;
+
+            transition: 0.3s;
+        }
+
+
+        .menu li a:hover,
+        .menu li a.active {
+
+            background: #2e7d32;
+        }
+
+
+        .menu-icon {
+            margin-right: 10px;
+        }
+
+
+        /* Logout */
+
+        .logout {
+
+            position: absolute;
+
+            bottom: 25px;
+
+            left: 15px;
+            right: 15px;
+        }
+
+
+        .logout a {
+
+            display: block;
+
+            text-align: center;
+
+            padding: 12px;
+
+            background: #c62828;
+
+            color: white;
+
+            text-decoration: none;
+
+            border-radius: 7px;
+        }
+
+
+        .logout a:hover {
+            background: #b71c1c;
+        }
+
+
+        /* =========================
+           MAIN CONTENT
+        ========================= */
+
+        .main {
+
+            margin-left: 250px;
+
+            padding: 30px;
+        }
+
+
+        /* Header */
+
+        .top-header {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            margin-bottom: 25px;
+        }
+
+
+        .page-title h1 {
+
+            color: #1b5e20;
+
+            margin-bottom: 5px;
+        }
+
+
+        .page-title p {
+            color: #777;
+        }
+
+
+        .date {
+
+            background: white;
+
+            padding: 12px 18px;
+
+            border-radius: 8px;
+
+            box-shadow:
+                0 3px 10px rgba(0,0,0,0.08);
+        }
+
+
+        /* =========================
+           INTRODUCTION
+        ========================= */
+
+        .intro-card {
+
+            background: white;
+
+            padding: 25px;
+
+            border-radius: 10px;
+
+            box-shadow:
+                0 3px 12px rgba(0,0,0,0.07);
+
+            margin-bottom: 25px;
+
+            border-left: 5px solid #2e7d32;
+        }
+
+
+        .intro-card h2 {
+
+            color: #1b5e20;
+
+            margin-bottom: 10px;
+        }
+
+
+        .intro-card p {
+
+            color: #666;
+
+            line-height: 1.6;
+        }
+
+
+        /* =========================
+           SEARCH & FILTER
+        ========================= */
+
+        .filter-section {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            gap: 15px;
+
+            margin-bottom: 25px;
+        }
+
+
+        .search-box {
+
+            flex: 1;
+
+            padding: 13px 15px;
+
+            border: 1px solid #ddd;
+
+            border-radius: 7px;
+
+            outline: none;
+
+            background: white;
+
+            font-size: 14px;
+        }
+
+
+        .category-filter {
+
+            padding: 13px 15px;
+
+            border: 1px solid #ddd;
+
+            border-radius: 7px;
+
+            background: white;
+
+            outline: none;
+
+            width: 220px;
+        }
+
+
+        /* =========================
+           FERTILIZER GRID
+        ========================= */
+
+        .fertilizer-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 22px;
+
+            margin-bottom: 30px;
+        }
+
+
+        .fertilizer-card {
+
+            background: white;
+
+            border-radius: 12px;
+
+            padding: 25px;
+
+            box-shadow:
+                0 3px 12px rgba(0,0,0,0.07);
+
+            transition: 0.3s;
+        }
+
+
+        .fertilizer-card:hover {
+
+            transform: translateY(-5px);
+
+            box-shadow:
+                0 7px 18px rgba(0,0,0,0.12);
+        }
+
+
+        .fertilizer-icon {
+
+            width: 65px;
+            height: 65px;
+
+            background: #e8f5e9;
+
+            border-radius: 50%;
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            font-size: 34px;
+
+            margin-bottom: 15px;
+        }
+
+
+        .fertilizer-card h2 {
+
+            color: #1b5e20;
+
+            font-size: 20px;
+
+            margin-bottom: 8px;
+        }
+
+
+        .category {
+
+            display: inline-block;
+
+            background: #e8f5e9;
+
+            color: #2e7d32;
+
+            padding: 5px 10px;
+
+            border-radius: 15px;
+
+            font-size: 12px;
+
+            margin-bottom: 12px;
+        }
+
+
+        .fertilizer-card p {
+
+            color: #666;
+
+            line-height: 1.5;
+
+            font-size: 14px;
+
+            margin-bottom: 15px;
+        }
+
+
+        .details {
+
+            border-top:
+                1px solid #eee;
+
+            padding-top: 15px;
+        }
+
+
+        .details p {
+
+            margin-bottom: 7px;
+
+            font-size: 13px;
+
+            color: #555;
+        }
+
+
+        .details strong {
+            color: #1b5e20;
+        }
+
+
+        /* =========================
+           RECOMMENDATION
+        ========================= */
+
+        .recommendation {
+
+            background: #1b5e20;
+
+            color: white;
+
+            padding: 30px;
+
+            border-radius: 12px;
+
+            margin-bottom: 30px;
+        }
+
+
+        .recommendation h2 {
+
+            margin-bottom: 10px;
+        }
+
+
+        .recommendation p {
+
+            color: #dcedc8;
+
+            line-height: 1.6;
+
+            margin-bottom: 20px;
+        }
+
+
+        .recommendation-box {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 15px;
+        }
+
+
+        .recommendation-item {
+
+            background: rgba(255,255,255,0.1);
+
+            padding: 18px;
+
+            border-radius: 8px;
+        }
+
+
+        .recommendation-item h3 {
+
+            margin-bottom: 7px;
+
+            color: white;
+        }
+
+
+        .recommendation-item p {
+
+            margin: 0;
+
+            font-size: 13px;
+
+            color: #dcedc8;
+        }
+
+
+        /* =========================
+           TIPS
+        ========================= */
+
+        .tips-card {
+
+            background: white;
+
+            padding: 25px;
+
+            border-radius: 10px;
+
+            box-shadow:
+                0 3px 12px rgba(0,0,0,0.07);
+        }
+
+
+        .tips-card h2 {
+
+            color: #1b5e20;
+
+            margin-bottom: 18px;
+        }
+
+
+        .tips {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, 1fr);
+
+            gap: 15px;
+        }
+
+
+        .tip {
+
+            background: #f4f8f4;
+
+            padding: 15px;
+
+            border-radius: 8px;
+
+            line-height: 1.5;
+        }
+
+
+        .tip strong {
+
+            color: #2e7d32;
+        }
+
+
+        /* =========================
+           RESPONSIVE
+        ========================= */
+
+        @media (max-width: 1100px) {
+
+            .fertilizer-grid {
+
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+
+
+            .recommendation-box {
+
+                grid-template-columns:
+                    1fr;
+            }
+        }
+
+
+        @media (max-width: 750px) {
+
+            .sidebar {
+
+                position: relative;
+
+                width: 100%;
+
+                height: auto;
+            }
+
+
+            .logout {
+
+                position: static;
+
+                margin-top: 20px;
+            }
+
+
+            .main {
+
+                margin-left: 0;
+
+                padding: 20px;
+            }
+
+
+            .top-header {
+
+                flex-direction: column;
+
+                align-items: flex-start;
+
+                gap: 15px;
+            }
+
+
+            .filter-section {
+
+                flex-direction: column;
+
+                align-items: stretch;
+            }
+
+
+            .category-filter {
+
+                width: 100%;
+            }
+
+
+            .fertilizer-grid {
+
+                grid-template-columns: 1fr;
+            }
+
+
+            .tips {
+
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =========================
+         SIDEBAR
+    ========================= -->
+
+    <aside class="sidebar">
+
+
+        <div class="logo">
+
+            🌱 Organic<span>Farm</span>
+
+        </div>
+
+
+        <!-- Farmer Profile -->
+
+        <div class="farmer-info">
+
+            <div class="farmer-icon">
+                👨‍🌾
+            </div>
+
+            <h3>
+                Chandu
+            </h3>
+
+            <p>
+                Green Organic Farm
+            </p>
+
+        </div>
+
+
+        <!-- Navigation -->
+
+        <ul class="menu">
+
+
+            <li>
+
+                <a href="dashboard.html">
+
+                    <span class="menu-icon">🏠</span>
+
+                    Dashboard
+
+                </a>
+
+            </li>
+
+
+            <li>
+
+                <a href="crops.html">
+
+                    <span class="menu-icon">🌾</span>
+
+                    My Crops
+
+                </a>
+
+            </li>
+
+
+            <li>
+
+                <a href="fertilizers.html"
+                   class="active">
+
+                    <span class="menu-icon">🌿</span>
+
+                    Organic Fertilizers
+
+                </a>
+
+            </li>
+
+
+            <li>
+
+                <a href="pests.html">
+
+                    <span class="menu-icon">🐛</span>
+
+                    Pest Management
+
+                </a>
+
+            </li>
+
+
+            <li>
+
+                <a href="activities.html">
+
+                    <span class="menu-icon">📅</span>
+
+                    Farm Activities
+
+                </a>
+
+            </li>
+
+
+            <li>
+
+                <a href="harvest.html">
+
+                    <span class="menu-icon">🧺</span>
+
+                    Harvest Records
+
+                </a>
+
+            </li>
+
+
+            <li>
+
+                <a href="products.html">
+
+                    <span class="menu-icon">🛒</span>
+
+                    My Products
+
+                </a>
+
+            </li>
+
+
+            <li>
+
+                <a href="profile.html">
+
+                    <span class="menu-icon">👤</span>
+
+                    My Profile
+
+                </a>
+
+            </li>
+
+
+        </ul>
+
+
+        <!-- Logout -->
+
+        <div class="logout">
+
+            <a href="login.html">
+
+                🚪 Logout
+
+            </a>
+
+        </div>
+
+
+    </aside>
+
+
+    <!-- =========================
+         MAIN CONTENT
+    ========================= -->
+
+    <main class="main">
+
+
+        <!-- Header -->
+
+        <div class="top-header">
+
+            <div class="page-title">
+
+                <h1>
+                    🌿 Organic Fertilizers
+                </h1>
+
+                <p>
+                    Learn about natural fertilizers for healthy organic crops.
+                </p>
+
+            </div>
+
+
+            <div class="date">
+
+                📅 12 August 2026
+
+            </div>
+
+        </div>
+
+
+        <!-- =========================
+             INTRO
+        ========================= -->
+
+        <div class="intro-card">
+
+            <h2>
+                🌱 Why Use Organic Fertilizers?
+            </h2>
+
+            <p>
+
+                Organic fertilizers are made from natural materials
+                such as plant residues, animal manure and compost.
+                They improve soil fertility, support beneficial soil
+                organisms and provide nutrients to crops.
+
+            </p>
+
+        </div>
+
+
+        <!-- =========================
+             SEARCH & FILTER
+        ========================= -->
+
+        <div class="filter-section">
+
+
+            <input
+                type="text"
+                id="searchInput"
+                class="search-box"
+                placeholder="🔍 Search fertilizer..."
+                onkeyup="filterFertilizers()">
+
+
+            <select
+                id="categoryFilter"
+                class="category-filter"
+                onchange="filterFertilizers()">
+
+                <option value="all">
+                    All Categories
+                </option>
+
+                <option value="compost">
+                    Compost
+                </option>
+
+                <option value="manure">
+                    Animal Manure
+                </option>
+
+                <option value="plant">
+                    Plant Based
+                </option>
+
+                <option value="liquid">
+                    Liquid Fertilizer
+                </option>
+
+            </select>
+
+
+        </div>
+
+
+        <!-- =========================
+             FERTILIZER CARDS
+        ========================= -->
+
+        <div class="fertilizer-grid"
+             id="fertilizerGrid">
+
+
+            <!-- Compost -->
+
+            <div class="fertilizer-card"
+                 data-category="compost">
+
+                <div class="fertilizer-icon">
+                    ♻️
+                </div>
+
+                <h2>
+                    Compost
+                </h2>
+
+                <span class="category">
+                    Compost
+                </span>
+
+                <p>
+
+                    Decomposed organic materials that improve
+                    soil structure and provide nutrients.
+
+                </p>
+
+                <div class="details">
+
+                    <p>
+                        <strong>Best for:</strong>
+                        Vegetables and fruits
+                    </p>
+
+                    <p>
+                        <strong>Application:</strong>
+                        Mix with soil before planting
+                    </p>
+
+                    <p>
+                        <strong>Benefit:</strong>
+                        Improves soil fertility
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- Vermicompost -->
+
+            <div class="fertilizer-card"
+                 data-category="compost">
+
+                <div class="fertilizer-icon">
+                    🪱
+                </div>
+
+                <h2>
+                    Vermicompost
+                </h2>
+
+                <span class="category">
+                    Compost
+                </span>
+
+                <p>
+
+                    Nutrient-rich organic fertilizer produced
+                    using earthworms and decomposed organic matter.
+
+                </p>
+
+                <div class="details">
+
+                    <p>
+                        <strong>Best for:</strong>
+                        Vegetables and flowering plants
+                    </p>
+
+                    <p>
+                        <strong>Application:</strong>
+                        Apply around plant roots
+                    </p>
+
+                    <p>
+                        <strong>Benefit:</strong>
+                        Improves nutrient availability
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- Cow Manure -->
+
+            <div class="fertilizer-card"
+                 data-category="manure">
+
+                <div class="fertilizer-icon">
+                    🐄
+                </div>
+
+                <h2>
+                    Cow Manure
+                </h2>
+
+                <span class="category">
+                    Animal Manure
+                </span>
+
+                <p>
+
+                    Well-decomposed cow manure is a traditional
+                    source of organic nutrients for farm soil.
+
+                </p>
+
+                <div class="details">
+
+                    <p>
+                        <strong>Best for:</strong>
+                        Field crops and vegetables
+                    </p>
+
+                    <p>
+                        <strong>Application:</strong>
+                        Mix well-decomposed manure into soil
+                    </p>
+
+                    <p>
+                        <strong>Benefit:</strong>
+                        Adds organic matter
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- Neem Cake -->
+
+            <div class="fertilizer-card"
+                 data-category="plant">
+
+                <div class="fertilizer-icon">
+                    🌿
+                </div>
+
+                <h2>
+                    Neem Cake
+                </h2>
+
+                <span class="category">
+                    Plant Based
+                </span>
+
+                <p>
+
+                    Neem seed cake is an organic soil amendment
+                    commonly used in crop production.
+
+                </p>
+
+                <div class="details">
+
+                    <p>
+                        <strong>Best for:</strong>
+                        Vegetables and field crops
+                    </p>
+
+                    <p>
+                        <strong>Application:</strong>
+                        Mix into soil near the root zone
+                    </p>
+
+                    <p>
+                        <strong>Benefit:</strong>
+                        Adds nutrients and organic matter
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- Green Manure -->
+
+            <div class="fertilizer-card"
+                 data-category="plant">
+
+                <div class="fertilizer-icon">
+                    🌱
+                </div>
+
+                <h2>
+                    Green Manure
+                </h2>
+
+                <span class="category">
+                    Plant Based
+                </span>
+
+                <p>
+
+                    Green manure crops are grown and incorporated
+                    into soil to add organic matter.
+
+                </p>
+
+                <div class="details">
+
+                    <p>
+                        <strong>Best for:</strong>
+                        Rice and field crops
+                    </p>
+
+                    <p>
+                        <strong>Application:</strong>
+                        Incorporate suitable green plants into soil
+                    </p>
+
+                    <p>
+                        <strong>Benefit:</strong>
+                        Improves soil organic matter
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- Jeevamrut -->
+
+            <div class="fertilizer-card"
+                 data-category="liquid">
+
+                <div class="fertilizer-icon">
+                    💧
+                </div>
+
+                <h2>
+                    Jeevamrut
+                </h2>
+
+                <span class="category">
+                    Liquid Fertilizer
+                </span>
+
+                <p>
+
+                    A traditional fermented farm input used
+                    in some natural farming practices.
+
+                </p>
+
+                <div class="details">
+
+                    <p>
+                        <strong>Best for:</strong>
+                        Various crops
+                    </p>
+
+                    <p>
+                        <strong>Application:</strong>
+                        Use according to an appropriate farm practice
+                    </p>
+
+                    <p>
+                        <strong>Benefit:</strong>
+                        Supports soil biological activity
+                    </p>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+        <!-- =========================
+             CROP RECOMMENDATIONS
+        ========================= -->
+
+        <div class="recommendation">
+
+
+            <h2>
+                🌾 Crop-wise Recommendations
+            </h2>
+
+            <p>
+
+                Select suitable organic inputs according to your
+                crop, soil condition and local farming practices.
+                Always consider soil testing and recommended
+                application rates.
+
+            </p>
+
+
+            <div class="recommendation-box">
+
+
+                <div class="recommendation-item">
+
+                    <h3>
+                        🍅 Tomato
+                    </h3>
+
+                    <p>
+                        Compost and well-decomposed manure can
+                        be incorporated into the soil before planting.
+                    </p>
+
+                </div>
+
+
+                <div class="recommendation-item">
+
+                    <h3>
+                        🌾 Rice
+                    </h3>
+
+                    <p>
+                        Green manure and compost can contribute
+                        organic matter to rice-growing soils.
+                    </p>
+
+                </div>
+
+
+                <div class="recommendation-item">
+
+                    <h3>
+                        🥬 Spinach
+                    </h3>
+
+                    <p>
+                        Mature compost can be used as part of
+                        soil fertility management.
+                    </p>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+
+        <!-- =========================
+             ORGANIC FERTILIZER TIPS
+        ========================= -->
+
+        <div class="tips-card">
+
+
+            <h2>
+                💡 Organic Fertilizer Tips
+            </h2>
+
+
+            <div class="tips">
+
+
+                <div class="tip">
+
+                    🌱
+
+                    <strong>
+                        Use mature compost:
+                    </strong>
+
+                    Make sure compost is properly decomposed
+                    before applying it to crops.
+
+                </div>
+
+
+                <div class="tip">
+
+                    🧪
+
+                    <strong>
+                        Test your soil:
+                    </strong>
+
+                    Soil testing helps determine nutrient
+                    requirements more accurately.
+
+                </div>
+
+
+                <div class="tip">
+
+                    💧
+
+                    <strong>
+                        Avoid over-application:
+                    </strong>
+
+                    More fertilizer does not always mean
+                    better crop growth.
+
+                </div>
+
+
+                <div class="tip">
+
+                    ♻️
+
+                    <strong>
+                        Recycle farm waste:
+                    </strong>
+
+                    Crop residues can be managed through
+                    appropriate composting practices.
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+
+    </main>
+
+
+    <!-- =========================
+         JAVASCRIPT
+    ========================= -->
+
+    <script>
+
+
+        function filterFertilizers() {
+
+
+            const searchText =
+                document
+                .getElementById("searchInput")
+                .value
+                .toLowerCase();
+
+
+            const category =
+                document
+                .getElementById("categoryFilter")
+                .value;
+
+
+            const cards =
+                document
+                .querySelectorAll(".fertilizer-card");
+
+
+            cards.forEach(function(card) {
+
+
+                const text =
+                    card
+                    .textContent
+                    .toLowerCase();
+
+
+                const cardCategory =
+                    card
+                    .getAttribute("data-category");
+
+
+                const searchMatch =
+                    text.includes(searchText);
+
+
+                const categoryMatch =
+                    category === "all" ||
+                    cardCategory === category;
+
+
+                if (
+                    searchMatch &&
+                    categoryMatch
+                ) {
+
+                    card.style.display = "block";
+
+                }
+
+                else {
+
+                    card.style.display = "none";
+
+                }
+
+            });
+
+        }
+
+    </script>
+
+
+</body>
+
+</html>
+```

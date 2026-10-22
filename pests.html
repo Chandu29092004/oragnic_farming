@@ -1,0 +1,1139 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Pest Management - Organic Farming Management System</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f4f8f4;
+            color: #333;
+        }
+
+        /* =========================
+           SIDEBAR
+        ========================= */
+
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 250px;
+            height: 100vh;
+            background: #1b5e20;
+            color: white;
+            padding: 25px 15px;
+            z-index: 1000;
+        }
+
+        .logo {
+            text-align: center;
+            font-size: 25px;
+            font-weight: bold;
+            margin-bottom: 35px;
+        }
+
+        .logo span {
+            color: #a5d6a7;
+        }
+
+        .farmer-info {
+            text-align: center;
+            padding-bottom: 25px;
+            border-bottom: 1px solid rgba(255,255,255,0.2);
+            margin-bottom: 20px;
+        }
+
+        .farmer-icon {
+            width: 70px;
+            height: 70px;
+            margin: auto;
+            background: #66bb6a;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 35px;
+            margin-bottom: 10px;
+        }
+
+        .farmer-info h3 {
+            margin-bottom: 5px;
+        }
+
+        .farmer-info p {
+            font-size: 13px;
+            color: #c8e6c9;
+        }
+
+        .menu {
+            list-style: none;
+        }
+
+        .menu li {
+            margin: 7px 0;
+        }
+
+        .menu li a {
+            display: block;
+            padding: 13px 15px;
+            color: white;
+            text-decoration: none;
+            border-radius: 7px;
+            transition: 0.3s;
+        }
+
+        .menu li a:hover,
+        .menu li a.active {
+            background: #2e7d32;
+        }
+
+        .menu-icon {
+            margin-right: 10px;
+        }
+
+        .logout {
+            position: absolute;
+            bottom: 25px;
+            left: 15px;
+            right: 15px;
+        }
+
+        .logout a {
+            display: block;
+            text-align: center;
+            padding: 12px;
+            background: #c62828;
+            color: white;
+            text-decoration: none;
+            border-radius: 7px;
+        }
+
+        .logout a:hover {
+            background: #b71c1c;
+        }
+
+        /* =========================
+           MAIN CONTENT
+        ========================= */
+
+        .main {
+            margin-left: 250px;
+            padding: 30px;
+        }
+
+        .top-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .page-title h1 {
+            color: #1b5e20;
+            margin-bottom: 5px;
+        }
+
+        .page-title p {
+            color: #777;
+        }
+
+        .date {
+            background: white;
+            padding: 12px 18px;
+            border-radius: 8px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+        }
+
+        /* =========================
+           INTRODUCTION
+        ========================= */
+
+        .intro-card {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.07);
+            border-left: 5px solid #2e7d32;
+        }
+
+        .intro-card h2 {
+            color: #1b5e20;
+            margin-bottom: 10px;
+        }
+
+        .intro-card p {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        /* =========================
+           SEARCH
+        ========================= */
+
+        .filter-section {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .search-box,
+        .crop-filter {
+            padding: 13px 15px;
+            border: 1px solid #ddd;
+            border-radius: 7px;
+            outline: none;
+            background: white;
+        }
+
+        .search-box {
+            flex: 1;
+        }
+
+        .crop-filter {
+            width: 230px;
+        }
+
+        /* =========================
+           PEST GRID
+        ========================= */
+
+        .pest-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 22px;
+            margin-bottom: 30px;
+        }
+
+        .pest-card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.07);
+            transition: 0.3s;
+        }
+
+        .pest-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 7px 18px rgba(0,0,0,0.12);
+        }
+
+        .pest-icon {
+            width: 65px;
+            height: 65px;
+            background: #fff3e0;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 34px;
+            margin-bottom: 15px;
+        }
+
+        .pest-card h2 {
+            color: #1b5e20;
+            font-size: 20px;
+            margin-bottom: 8px;
+        }
+
+        .crop-tag {
+            display: inline-block;
+            background: #e8f5e9;
+            color: #2e7d32;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 12px;
+            margin-bottom: 12px;
+        }
+
+        .pest-card p {
+            color: #666;
+            line-height: 1.5;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+
+        .details {
+            border-top: 1px solid #eee;
+            padding-top: 15px;
+        }
+
+        .details p {
+            margin-bottom: 8px;
+            font-size: 13px;
+            color: #555;
+        }
+
+        .details strong {
+            color: #1b5e20;
+        }
+
+        /* =========================
+           ORGANIC CONTROL
+        ========================= */
+
+        .control-section {
+            background: #1b5e20;
+            color: white;
+            padding: 30px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+        }
+
+        .control-section h2 {
+            margin-bottom: 10px;
+        }
+
+        .control-section > p {
+            color: #dcedc8;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .control-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+        }
+
+        .control-card {
+            background: rgba(255,255,255,0.1);
+            padding: 20px;
+            border-radius: 8px;
+        }
+
+        .control-card h3 {
+            margin-bottom: 8px;
+        }
+
+        .control-card p {
+            color: #dcedc8;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        /* =========================
+           PREVENTION TIPS
+        ========================= */
+
+        .tips-card {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.07);
+        }
+
+        .tips-card h2 {
+            color: #1b5e20;
+            margin-bottom: 18px;
+        }
+
+        .tips {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+
+        .tip {
+            background: #f4f8f4;
+            padding: 16px;
+            border-radius: 8px;
+            line-height: 1.5;
+        }
+
+        .tip strong {
+            color: #2e7d32;
+        }
+
+        /* =========================
+           RESPONSIVE
+        ========================= */
+
+        @media (max-width: 1100px) {
+
+            .pest-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .control-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 750px) {
+
+            .sidebar {
+                position: relative;
+                width: 100%;
+                height: auto;
+            }
+
+            .logout {
+                position: static;
+                margin-top: 20px;
+            }
+
+            .main {
+                margin-left: 0;
+                padding: 20px;
+            }
+
+            .top-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+
+            .filter-section {
+                flex-direction: column;
+            }
+
+            .crop-filter {
+                width: 100%;
+            }
+
+            .pest-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .tips {
+                grid-template-columns: 1fr;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =========================
+         SIDEBAR
+    ========================= -->
+
+    <aside class="sidebar">
+
+        <div class="logo">
+            🌱 Organic<span>Farm</span>
+        </div>
+
+
+        <div class="farmer-info">
+
+            <div class="farmer-icon">
+                👨‍🌾
+            </div>
+
+            <h3>Chandu</h3>
+
+            <p>Green Organic Farm</p>
+
+        </div>
+
+
+        <ul class="menu">
+
+            <li>
+                <a href="dashboard.html">
+                    <span class="menu-icon">🏠</span>
+                    Dashboard
+                </a>
+            </li>
+
+            <li>
+                <a href="crops.html">
+                    <span class="menu-icon">🌾</span>
+                    My Crops
+                </a>
+            </li>
+
+            <li>
+                <a href="fertilizers.html">
+                    <span class="menu-icon">🌿</span>
+                    Organic Fertilizers
+                </a>
+            </li>
+
+            <li>
+                <a href="pests.html" class="active">
+                    <span class="menu-icon">🐛</span>
+                    Pest Management
+                </a>
+            </li>
+
+            <li>
+                <a href="activities.html">
+                    <span class="menu-icon">📅</span>
+                    Farm Activities
+                </a>
+            </li>
+
+            <li>
+                <a href="harvest.html">
+                    <span class="menu-icon">🧺</span>
+                    Harvest Records
+                </a>
+            </li>
+
+            <li>
+                <a href="products.html">
+                    <span class="menu-icon">🛒</span>
+                    My Products
+                </a>
+            </li>
+
+            <li>
+                <a href="profile.html">
+                    <span class="menu-icon">👤</span>
+                    My Profile
+                </a>
+            </li>
+
+        </ul>
+
+
+        <div class="logout">
+
+            <a href="login.html">
+                🚪 Logout
+            </a>
+
+        </div>
+
+    </aside>
+
+
+    <!-- =========================
+         MAIN CONTENT
+    ========================= -->
+
+    <main class="main">
+
+
+        <!-- Header -->
+
+        <div class="top-header">
+
+            <div class="page-title">
+
+                <h1>
+                    🐛 Pest Management
+                </h1>
+
+                <p>
+                    Identify common crop pests and learn organic management methods.
+                </p>
+
+            </div>
+
+
+            <div class="date">
+                📅 12 August 2026
+            </div>
+
+        </div>
+
+
+        <!-- =========================
+             INTRODUCTION
+        ========================= -->
+
+        <div class="intro-card">
+
+            <h2>
+                🌱 Organic Pest Management
+            </h2>
+
+            <p>
+
+                Integrated pest management combines monitoring,
+                prevention, biological control and other suitable
+                practices to reduce crop damage. In organic farming,
+                farmers can use appropriate biological and cultural
+                methods while protecting beneficial organisms.
+
+            </p>
+
+        </div>
+
+
+        <!-- =========================
+             SEARCH & FILTER
+        ========================= -->
+
+        <div class="filter-section">
+
+            <input
+                type="text"
+                id="searchInput"
+                class="search-box"
+                placeholder="🔍 Search pest..."
+                onkeyup="filterPests()">
+
+
+            <select
+                id="cropFilter"
+                class="crop-filter"
+                onchange="filterPests()">
+
+                <option value="all">
+                    All Crops
+                </option>
+
+                <option value="tomato">
+                    Tomato
+                </option>
+
+                <option value="rice">
+                    Rice
+                </option>
+
+                <option value="brinjal">
+                    Brinjal
+                </option>
+
+                <option value="vegetables">
+                    Vegetables
+                </option>
+
+            </select>
+
+        </div>
+
+
+        <!-- =========================
+             PEST CARDS
+        ========================= -->
+
+        <div class="pest-grid"
+             id="pestGrid">
+
+
+            <!-- Aphids -->
+
+            <div class="pest-card"
+                 data-crop="vegetables">
+
+                <div class="pest-icon">
+                    🐜
+                </div>
+
+                <h2>
+                    Aphids
+                </h2>
+
+                <span class="crop-tag">
+                    Vegetables
+                </span>
+
+                <p>
+
+                    Small sap-sucking insects that can cause
+                    curling, yellowing and reduced plant growth.
+
+                </p>
+
+                <div class="details">
+
+                    <p>
+                        <strong>Signs:</strong>
+                        Clusters of small insects on young shoots
+                    </p>
+
+                    <p>
+                        <strong>Organic approach:</strong>
+                        Encourage natural predators such as ladybirds
+                    </p>
+
+                    <p>
+                        <strong>Prevention:</strong>
+                        Regular crop inspection and weed management
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- Fruit Borer -->
+
+            <div class="pest-card"
+                 data-crop="tomato">
+
+                <div class="pest-icon">
+                    🐛
+                </div>
+
+                <h2>
+                    Tomato Fruit Borer
+                </h2>
+
+                <span class="crop-tag">
+                    Tomato
+                </span>
+
+                <p>
+
+                    Caterpillars can feed on tomato fruits and
+                    damage developing crops.
+
+                </p>
+
+                <div class="details">
+
+                    <p>
+                        <strong>Signs:</strong>
+                        Holes and feeding damage on fruits
+                    </p>
+
+                    <p>
+                        <strong>Organic approach:</strong>
+                        Monitor regularly and use suitable biological
+                        control methods
+                    </p>
+
+                    <p>
+                        <strong>Prevention:</strong>
+                        Remove severely affected plant material
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- Stem Borer -->
+
+            <div class="pest-card"
+                 data-crop="rice">
+
+                <div class="pest-icon">
+                    🐛
+                </div>
+
+                <h2>
+                    Rice Stem Borer
+                </h2>
+
+                <span class="crop-tag">
+                    Rice
+                </span>
+
+                <p>
+
+                    Larvae damage rice stems and may cause
+                    dead-heart or white-ear symptoms.
+
+                </p>
+
+                <div class="details">
+
+                    <p>
+                        <strong>Signs:</strong>
+                        Dead tillers or white panicles
+                    </p>
+
+                    <p>
+                        <strong>Organic approach:</strong>
+                        Use monitoring and appropriate biological
+                        control techniques
+                    </p>
+
+                    <p>
+                        <strong>Prevention:</strong>
+                        Field sanitation and balanced crop management
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- Whitefly -->
+
+            <div class="pest-card"
+                 data-crop="tomato">
+
+                <div class="pest-icon">
+                    🦋
+                </div>
+
+                <h2>
+                    Whitefly
+                </h2>
+
+                <span class="crop-tag">
+                    Tomato
+                </span>
+
+                <p>
+
+                    Small insects that feed on plant sap and
+                    may contribute to the spread of plant diseases.
+
+                </p>
+
+                <div class="details">
+
+                    <p>
+                        <strong>Signs:</strong>
+                        Small white insects flying from leaves
+                    </p>
+
+                    <p>
+                        <strong>Organic approach:</strong>
+                        Use monitoring and encourage beneficial insects
+                    </p>
+
+                    <p>
+                        <strong>Prevention:</strong>
+                        Remove heavily affected leaves where appropriate
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- Brinjal Shoot Borer -->
+
+            <div class="pest-card"
+                 data-crop="brinjal">
+
+                <div class="pest-icon">
+                    🐛
+                </div>
+
+                <h2>
+                    Brinjal Shoot Borer
+                </h2>
+
+                <span class="crop-tag">
+                    Brinjal
+                </span>
+
+                <p>
+
+                    Larvae bore into young shoots and fruits,
+                    reducing plant growth and crop quality.
+
+                </p>
+
+                <div class="details">
+
+                    <p>
+                        <strong>Signs:</strong>
+                        Wilting shoots and holes in fruits
+                    </p>
+
+                    <p>
+                        <strong>Organic approach:</strong>
+                        Regularly remove affected shoots and fruits
+                    </p>
+
+                    <p>
+                        <strong>Prevention:</strong>
+                        Frequent crop monitoring
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- Mealybug -->
+
+            <div class="pest-card"
+                 data-crop="vegetables">
+
+                <div class="pest-icon">
+                    🐞
+                </div>
+
+                <h2>
+                    Mealybug
+                </h2>
+
+                <span class="crop-tag">
+                    Vegetables
+                </span>
+
+                <p>
+
+                    Sap-feeding insects covered with a waxy
+                    coating that can weaken plants.
+
+                </p>
+
+                <div class="details">
+
+                    <p>
+                        <strong>Signs:</strong>
+                        White cotton-like clusters on plant parts
+                    </p>
+
+                    <p>
+                        <strong>Organic approach:</strong>
+                        Remove affected parts and encourage natural enemies
+                    </p>
+
+                    <p>
+                        <strong>Prevention:</strong>
+                        Inspect new plants before introducing them
+                    </p>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+        <!-- =========================
+             ORGANIC CONTROL METHODS
+        ========================= -->
+
+        <div class="control-section">
+
+            <h2>
+                🌿 Organic Pest Control Methods
+            </h2>
+
+            <p>
+
+                Use an integrated approach rather than relying on
+                a single control method. Identify the pest first,
+                monitor crop damage and choose an appropriate
+                management strategy.
+
+            </p>
+
+
+            <div class="control-grid">
+
+
+                <div class="control-card">
+
+                    <h3>
+                        🐞 Biological Control
+                    </h3>
+
+                    <p>
+                        Conserve beneficial insects and other natural
+                        enemies that help regulate pest populations.
+                    </p>
+
+                </div>
+
+
+                <div class="control-card">
+
+                    <h3>
+                        🌱 Cultural Control
+                    </h3>
+
+                    <p>
+                        Use crop rotation, field sanitation, healthy
+                        planting material and suitable cultivation practices.
+                    </p>
+
+                </div>
+
+
+                <div class="control-card">
+
+                    <h3>
+                        🔍 Regular Monitoring
+                    </h3>
+
+                    <p>
+                        Inspect leaves, stems and fruits regularly
+                        so pest problems can be identified early.
+                    </p>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+
+        <!-- =========================
+             PREVENTION TIPS
+        ========================= -->
+
+        <div class="tips-card">
+
+            <h2>
+                💡 Pest Prevention Tips
+            </h2>
+
+
+            <div class="tips">
+
+
+                <div class="tip">
+
+                    🔍
+
+                    <strong>
+                        Inspect crops regularly:
+                    </strong>
+
+                    Check leaves, stems, flowers and fruits
+                    for early signs of pest activity.
+
+                </div>
+
+
+                <div class="tip">
+
+                    🌾
+
+                    <strong>
+                        Practice crop rotation:
+                    </strong>
+
+                    Rotating suitable crops can help reduce
+                    the buildup of some crop-specific pests.
+
+                </div>
+
+
+                <div class="tip">
+
+                    🐞
+
+                    <strong>
+                        Protect beneficial insects:
+                    </strong>
+
+                    Avoid unnecessary actions that could harm
+                    natural pest enemies.
+
+                </div>
+
+
+                <div class="tip">
+
+                    🌿
+
+                    <strong>
+                        Maintain field hygiene:
+                    </strong>
+
+                    Remove suitable sources of pest infestation
+                    and manage weeds appropriately.
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+
+    </main>
+
+
+    <!-- =========================
+         JAVASCRIPT
+    ========================= -->
+
+    <script>
+
+        function filterPests() {
+
+            const searchText =
+                document
+                .getElementById("searchInput")
+                .value
+                .toLowerCase();
+
+            const crop =
+                document
+                .getElementById("cropFilter")
+                .value;
+
+            const cards =
+                document
+                .querySelectorAll(".pest-card");
+
+
+            cards.forEach(function(card) {
+
+                const text =
+                    card
+                    .textContent
+                    .toLowerCase();
+
+                const cardCrop =
+                    card
+                    .getAttribute("data-crop");
+
+
+                const searchMatch =
+                    text.includes(searchText);
+
+
+                const cropMatch =
+                    crop === "all" ||
+                    cardCrop === crop ||
+                    (
+                        crop === "tomato" &&
+                        cardCrop === "tomato"
+                    ) ||
+                    (
+                        crop === "rice" &&
+                        cardCrop === "rice"
+                    ) ||
+                    (
+                        crop === "brinjal" &&
+                        cardCrop === "brinjal"
+                    ) ||
+                    (
+                        crop === "vegetables" &&
+                        cardCrop === "vegetables"
+                    );
+
+
+                if (searchMatch && cropMatch) {
+
+                    card.style.display = "block";
+
+                } else {
+
+                    card.style.display = "none";
+
+                }
+
+            });
+
+        }
+
+    </script>
+
+
+</body>
+
+</html>
+```

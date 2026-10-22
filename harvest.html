@@ -1,0 +1,1302 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Orders - Organic Farming Management System</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f4f8f4;
+            color: #333;
+        }
+
+        /* =========================
+           SIDEBAR
+        ========================= */
+
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 250px;
+            height: 100vh;
+            background: #1b5e20;
+            color: white;
+            padding: 25px 15px;
+            z-index: 1000;
+        }
+
+        .logo {
+            text-align: center;
+            font-size: 25px;
+            font-weight: bold;
+            margin-bottom: 35px;
+        }
+
+        .logo span {
+            color: #a5d6a7;
+        }
+
+        .farmer-info {
+            text-align: center;
+            padding-bottom: 25px;
+            border-bottom: 1px solid rgba(255,255,255,0.2);
+            margin-bottom: 20px;
+        }
+
+        .farmer-icon {
+            width: 70px;
+            height: 70px;
+            margin: auto;
+            background: #66bb6a;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 35px;
+            margin-bottom: 10px;
+        }
+
+        .farmer-info h3 {
+            margin-bottom: 5px;
+        }
+
+        .farmer-info p {
+            font-size: 13px;
+            color: #c8e6c9;
+        }
+
+        .menu {
+            list-style: none;
+        }
+
+        .menu li {
+            margin: 7px 0;
+        }
+
+        .menu li a {
+            display: block;
+            padding: 13px 15px;
+            color: white;
+            text-decoration: none;
+            border-radius: 7px;
+            transition: 0.3s;
+        }
+
+        .menu li a:hover,
+        .menu li a.active {
+            background: #2e7d32;
+        }
+
+        .menu-icon {
+            margin-right: 10px;
+        }
+
+        .logout {
+            position: absolute;
+            bottom: 25px;
+            left: 15px;
+            right: 15px;
+        }
+
+        .logout a {
+            display: block;
+            text-align: center;
+            padding: 12px;
+            background: #c62828;
+            color: white;
+            text-decoration: none;
+            border-radius: 7px;
+        }
+
+        .logout a:hover {
+            background: #b71c1c;
+        }
+
+        /* =========================
+           MAIN
+        ========================= */
+
+        .main {
+            margin-left: 250px;
+            padding: 30px;
+        }
+
+        .top-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .page-title h1 {
+            color: #1b5e20;
+            margin-bottom: 5px;
+        }
+
+        .page-title p {
+            color: #777;
+        }
+
+        .date {
+            background: white;
+            padding: 12px 18px;
+            border-radius: 8px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+        }
+
+        /* =========================
+           SUMMARY
+        ========================= */
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 18px;
+            margin-bottom: 30px;
+        }
+
+        .summary-card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.07);
+        }
+
+        .summary-icon {
+            font-size: 30px;
+            margin-bottom: 8px;
+        }
+
+        .summary-card h2 {
+            color: #1b5e20;
+            margin-bottom: 5px;
+        }
+
+        .summary-card p {
+            color: #777;
+            font-size: 13px;
+        }
+
+        /* =========================
+           ORDERS CARD
+        ========================= */
+
+        .orders-card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.07);
+        }
+
+        .orders-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            gap: 15px;
+        }
+
+        .orders-header h2 {
+            color: #1b5e20;
+        }
+
+        .search-box {
+            padding: 11px 13px;
+            border: 1px solid #ddd;
+            border-radius: 7px;
+            outline: none;
+            width: 250px;
+        }
+
+        .filter-box {
+            padding: 11px 13px;
+            border: 1px solid #ddd;
+            border-radius: 7px;
+            outline: none;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        .orders-table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 900px;
+        }
+
+        .orders-table th {
+            background: #e8f5e9;
+            color: #1b5e20;
+            padding: 14px;
+            text-align: left;
+        }
+
+        .orders-table td {
+            padding: 14px;
+            border-bottom: 1px solid #eee;
+            font-size: 14px;
+        }
+
+        .orders-table tr:hover {
+            background: #f9fcf9;
+        }
+
+        /* =========================
+           ORDER STATUS
+        ========================= */
+
+        .status {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .delivered {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .processing {
+            background: #fff3e0;
+            color: #ef6c00;
+        }
+
+        .pending {
+            background: #e3f2fd;
+            color: #1565c0;
+        }
+
+        .cancelled {
+            background: #ffebee;
+            color: #c62828;
+        }
+
+        /* =========================
+           PAYMENT
+        ========================= */
+
+        .paid {
+            color: #2e7d32;
+            font-weight: bold;
+        }
+
+        .unpaid {
+            color: #c62828;
+            font-weight: bold;
+        }
+
+        /* =========================
+           VIEW BUTTON
+        ========================= */
+
+        .view-btn {
+            padding: 8px 13px;
+            background: #2e7d32;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .view-btn:hover {
+            background: #1b5e20;
+        }
+
+        /* =========================
+           ORDER DETAILS
+        ========================= */
+
+        .details-section {
+            margin-top: 30px;
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 20px;
+        }
+
+        .recent-card,
+        .delivery-card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.07);
+        }
+
+        .recent-card h2,
+        .delivery-card h2 {
+            color: #1b5e20;
+            margin-bottom: 20px;
+        }
+
+        .order-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 15px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .order-item:last-child {
+            border-bottom: none;
+        }
+
+        .order-item h4 {
+            margin-bottom: 5px;
+        }
+
+        .order-item p {
+            color: #777;
+            font-size: 13px;
+        }
+
+        .amount {
+            color: #1b5e20;
+            font-weight: bold;
+        }
+
+        .delivery-info {
+            background: #e8f5e9;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 12px;
+        }
+
+        .delivery-info strong {
+            color: #1b5e20;
+        }
+
+        /* =========================
+           RESPONSIVE
+        ========================= */
+
+        @media (max-width: 1100px) {
+
+            .summary-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .details-section {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+        @media (max-width: 750px) {
+
+            .sidebar {
+                position: relative;
+                width: 100%;
+                height: auto;
+            }
+
+            .logout {
+                position: static;
+                margin-top: 20px;
+            }
+
+            .main {
+                margin-left: 0;
+                padding: 20px;
+            }
+
+            .top-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+
+            .summary-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .orders-header {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .search-box {
+                width: 100%;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =========================
+         SIDEBAR
+    ========================= -->
+
+    <aside class="sidebar">
+
+        <div class="logo">
+            🌱 Organic<span>Farm</span>
+        </div>
+
+
+        <div class="farmer-info">
+
+            <div class="farmer-icon">
+                👨‍🌾
+            </div>
+
+            <h3>Chandu</h3>
+
+            <p>Green Organic Farm</p>
+
+        </div>
+
+
+        <ul class="menu">
+
+            <li>
+                <a href="dashboard.html">
+                    <span class="menu-icon">🏠</span>
+                    Dashboard
+                </a>
+            </li>
+
+            <li>
+                <a href="crops.html">
+                    <span class="menu-icon">🌾</span>
+                    My Crops
+                </a>
+            </li>
+
+            <li>
+                <a href="fertilizers.html">
+                    <span class="menu-icon">🌿</span>
+                    Organic Fertilizers
+                </a>
+            </li>
+
+            <li>
+                <a href="pests.html">
+                    <span class="menu-icon">🐛</span>
+                    Pest Management
+                </a>
+            </li>
+
+            <li>
+                <a href="activities.html">
+                    <span class="menu-icon">📅</span>
+                    Farm Activities
+                </a>
+            </li>
+
+            <li>
+                <a href="harvest.html">
+                    <span class="menu-icon">🧺</span>
+                    Harvest Records
+                </a>
+            </li>
+
+            <li>
+                <a href="products.html">
+                    <span class="menu-icon">🛒</span>
+                    My Products
+                </a>
+            </li>
+
+            <li>
+                <a href="orders.html" class="active">
+                    <span class="menu-icon">📦</span>
+                    Orders
+                </a>
+            </li>
+
+            <li>
+                <a href="profile.html">
+                    <span class="menu-icon">👤</span>
+                    My Profile
+                </a>
+            </li>
+
+        </ul>
+
+
+        <div class="logout">
+
+            <a href="login.html">
+                🚪 Logout
+            </a>
+
+        </div>
+
+    </aside>
+
+
+    <!-- =========================
+         MAIN CONTENT
+    ========================= -->
+
+    <main class="main">
+
+
+        <!-- HEADER -->
+
+        <div class="top-header">
+
+            <div class="page-title">
+
+                <h1>
+                    📦 Orders
+                </h1>
+
+                <p>
+                    Manage orders received for your organic products.
+                </p>
+
+            </div>
+
+
+            <div class="date">
+                📅 12 August 2026
+            </div>
+
+        </div>
+
+
+        <!-- =========================
+             SUMMARY
+        ========================= -->
+
+        <div class="summary-grid">
+
+
+            <div class="summary-card">
+
+                <div class="summary-icon">
+                    📦
+                </div>
+
+                <h2 id="totalOrders">
+                    8
+                </h2>
+
+                <p>
+                    Total Orders
+                </p>
+
+            </div>
+
+
+            <div class="summary-card">
+
+                <div class="summary-icon">
+                    ⏳
+                </div>
+
+                <h2>
+                    2
+                </h2>
+
+                <p>
+                    Pending Orders
+                </p>
+
+            </div>
+
+
+            <div class="summary-card">
+
+                <div class="summary-icon">
+                    🚚
+                </div>
+
+                <h2>
+                    3
+                </h2>
+
+                <p>
+                    Processing
+                </p>
+
+            </div>
+
+
+            <div class="summary-card">
+
+                <div class="summary-icon">
+                    💰
+                </div>
+
+                <h2>
+                    ₹18,450
+                </h2>
+
+                <p>
+                    Total Sales
+                </p>
+
+            </div>
+
+
+        </div>
+
+
+        <!-- =========================
+             ORDERS TABLE
+        ========================= -->
+
+        <div class="orders-card">
+
+
+            <div class="orders-header">
+
+                <h2>
+                    📋 Order History
+                </h2>
+
+
+                <input
+                    type="text"
+                    id="searchOrder"
+                    class="search-box"
+                    placeholder="🔍 Search order..."
+                    onkeyup="searchOrders()">
+
+
+                <select
+                    id="statusFilter"
+                    class="filter-box"
+                    onchange="filterOrders()">
+
+                    <option value="All">
+                        All Status
+                    </option>
+
+                    <option value="Pending">
+                        Pending
+                    </option>
+
+                    <option value="Processing">
+                        Processing
+                    </option>
+
+                    <option value="Delivered">
+                        Delivered
+                    </option>
+
+                    <option value="Cancelled">
+                        Cancelled
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div class="table-wrapper">
+
+                <table class="orders-table">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Order ID
+                            </th>
+
+                            <th>
+                                Customer
+                            </th>
+
+                            <th>
+                                Product
+                            </th>
+
+                            <th>
+                                Quantity
+                            </th>
+
+                            <th>
+                                Amount
+                            </th>
+
+                            <th>
+                                Order Date
+                            </th>
+
+                            <th>
+                                Payment
+                            </th>
+
+                            <th>
+                                Status
+                            </th>
+
+                            <th>
+                                Action
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody id="orderTable">
+
+
+                        <tr>
+
+                            <td>
+                                #ORD1001
+                            </td>
+
+                            <td>
+                                Rahul Kumar
+                            </td>
+
+                            <td>
+                                Organic Tomato
+                            </td>
+
+                            <td>
+                                10 kg
+                            </td>
+
+                            <td>
+                                ₹600
+                            </td>
+
+                            <td>
+                                10 Aug 2026
+                            </td>
+
+                            <td class="paid">
+                                Paid
+                            </td>
+
+                            <td>
+                                <span class="status delivered">
+                                    Delivered
+                                </span>
+                            </td>
+
+                            <td>
+                                <button
+                                    class="view-btn"
+                                    onclick="viewOrder('ORD1001')">
+                                    View
+                                </button>
+                            </td>
+
+                        </tr>
+
+
+                        <tr>
+
+                            <td>
+                                #ORD1002
+                            </td>
+
+                            <td>
+                                Priya Sharma
+                            </td>
+
+                            <td>
+                                Organic Rice
+                            </td>
+
+                            <td>
+                                25 kg
+                            </td>
+
+                            <td>
+                                ₹1,875
+                            </td>
+
+                            <td>
+                                10 Aug 2026
+                            </td>
+
+                            <td class="paid">
+                                Paid
+                            </td>
+
+                            <td>
+                                <span class="status processing">
+                                    Processing
+                                </span>
+                            </td>
+
+                            <td>
+                                <button
+                                    class="view-btn"
+                                    onclick="viewOrder('ORD1002')">
+                                    View
+                                </button>
+                            </td>
+
+                        </tr>
+
+
+                        <tr>
+
+                            <td>
+                                #ORD1003
+                            </td>
+
+                            <td>
+                                Arjun Reddy
+                            </td>
+
+                            <td>
+                                Organic Brinjal
+                            </td>
+
+                            <td>
+                                8 kg
+                            </td>
+
+                            <td>
+                                ₹400
+                            </td>
+
+                            <td>
+                                11 Aug 2026
+                            </td>
+
+                            <td class="paid">
+                                Paid
+                            </td>
+
+                            <td>
+                                <span class="status pending">
+                                    Pending
+                                </span>
+                            </td>
+
+                            <td>
+                                <button
+                                    class="view-btn"
+                                    onclick="viewOrder('ORD1003')">
+                                    View
+                                </button>
+                            </td>
+
+                        </tr>
+
+
+                        <tr>
+
+                            <td>
+                                #ORD1004
+                            </td>
+
+                            <td>
+                                Sneha Rao
+                            </td>
+
+                            <td>
+                                Organic Spinach
+                            </td>
+
+                            <td>
+                                5 kg
+                            </td>
+
+                            <td>
+                                ₹200
+                            </td>
+
+                            <td>
+                                11 Aug 2026
+                            </td>
+
+                            <td class="unpaid">
+                                Unpaid
+                            </td>
+
+                            <td>
+                                <span class="status pending">
+                                    Pending
+                                </span>
+                            </td>
+
+                            <td>
+                                <button
+                                    class="view-btn"
+                                    onclick="viewOrder('ORD1004')">
+                                    View
+                                </button>
+                            </td>
+
+                        </tr>
+
+
+                        <tr>
+
+                            <td>
+                                #ORD1005
+                            </td>
+
+                            <td>
+                                Kiran Kumar
+                            </td>
+
+                            <td>
+                                Organic Chilli
+                            </td>
+
+                            <td>
+                                10 kg
+                            </td>
+
+                            <td>
+                                ₹900
+                            </td>
+
+                            <td>
+                                09 Aug 2026
+                            </td>
+
+                            <td class="paid">
+                                Paid
+                            </td>
+
+                            <td>
+                                <span class="status delivered">
+                                    Delivered
+                                </span>
+                            </td>
+
+                            <td>
+                                <button
+                                    class="view-btn"
+                                    onclick="viewOrder('ORD1005')">
+                                    View
+                                </button>
+                            </td>
+
+                        </tr>
+
+
+                        <tr>
+
+                            <td>
+                                #ORD1006
+                            </td>
+
+                            <td>
+                                Anjali Devi
+                            </td>
+
+                            <td>
+                                Organic Banana
+                            </td>
+
+                            <td>
+                                15 kg
+                            </td>
+
+                            <td>
+                                ₹825
+                            </td>
+
+                            <td>
+                                08 Aug 2026
+                            </td>
+
+                            <td class="paid">
+                                Paid
+                            </td>
+
+                            <td>
+                                <span class="status processing">
+                                    Processing
+                                </span>
+                            </td>
+
+                            <td>
+                                <button
+                                    class="view-btn"
+                                    onclick="viewOrder('ORD1006')">
+                                    View
+                                </button>
+                            </td>
+
+                        </tr>
+
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+
+        <!-- =========================
+             RECENT ORDERS + DELIVERY
+        ========================= -->
+
+        <div class="details-section">
+
+
+            <div class="recent-card">
+
+                <h2>
+                    🛍️ Recent Orders
+                </h2>
+
+
+                <div class="order-item">
+
+                    <div>
+
+                        <h4>
+                            #ORD1006 - Organic Banana
+                        </h4>
+
+                        <p>
+                            Customer: Anjali Devi
+                        </p>
+
+                    </div>
+
+                    <div class="amount">
+                        ₹825
+                    </div>
+
+                </div>
+
+
+                <div class="order-item">
+
+                    <div>
+
+                        <h4>
+                            #ORD1005 - Organic Chilli
+                        </h4>
+
+                        <p>
+                            Customer: Kiran Kumar
+                        </p>
+
+                    </div>
+
+                    <div class="amount">
+                        ₹900
+                    </div>
+
+                </div>
+
+
+                <div class="order-item">
+
+                    <div>
+
+                        <h4>
+                            #ORD1004 - Organic Spinach
+                        </h4>
+
+                        <p>
+                            Customer: Sneha Rao
+                        </p>
+
+                    </div>
+
+                    <div class="amount">
+                        ₹200
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+            <div class="delivery-card">
+
+                <h2>
+                    🚚 Delivery Summary
+                </h2>
+
+
+                <div class="delivery-info">
+
+                    <strong>
+                        3
+                    </strong>
+
+                    Orders ready for delivery.
+
+                </div>
+
+
+                <div class="delivery-info">
+
+                    <strong>
+                        2
+                    </strong>
+
+                    Orders currently processing.
+
+                </div>
+
+
+                <div class="delivery-info">
+
+                    <strong>
+                        2
+                    </strong>
+
+                    Orders awaiting confirmation.
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+    </main>
+
+
+    <!-- =========================
+         JAVASCRIPT
+    ========================= -->
+
+    <script>
+
+
+        /* =========================
+           SEARCH ORDERS
+        ========================= */
+
+        function searchOrders() {
+
+            const searchText =
+                document
+                .getElementById("searchOrder")
+                .value
+                .toLowerCase();
+
+
+            const rows =
+                document
+                .querySelectorAll("#orderTable tr");
+
+
+            rows.forEach(function(row) {
+
+                const text =
+                    row.textContent.toLowerCase();
+
+
+                if (text.includes(searchText)) {
+
+                    row.style.display = "";
+
+                } else {
+
+                    row.style.display = "none";
+
+                }
+
+            });
+
+        }
+
+
+        /* =========================
+           FILTER ORDERS
+        ========================= */
+
+        function filterOrders() {
+
+            const selectedStatus =
+                document
+                .getElementById("statusFilter")
+                .value;
+
+
+            const rows =
+                document
+                .querySelectorAll("#orderTable tr");
+
+
+            rows.forEach(function(row) {
+
+                const statusElement =
+                    row.querySelector(".status");
+
+
+                if (!statusElement) {
+                    return;
+                }
+
+
+                const status =
+                    statusElement.textContent.trim();
+
+
+                if (
+                    selectedStatus === "All" ||
+                    status === selectedStatus
+                ) {
+
+                    row.style.display = "";
+
+                } else {
+
+                    row.style.display = "none";
+
+                }
+
+            });
+
+        }
+
+
+        /* =========================
+           VIEW ORDER
+        ========================= */
+
+        function viewOrder(orderId) {
+
+            alert(
+                "Order Details\n\n" +
+                "Order ID: #" + orderId +
+                "\n\n" +
+                "This section can later be connected " +
+                "to a PHP/MySQL order details page."
+            );
+
+        }
+
+
+    </script>
+
+
+</body>
+
+</html>
+```
